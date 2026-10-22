@@ -1,0 +1,23 @@
+import styled from "styled-components";
+export const Layout = styled.div`display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);max-width:1040px;width:100%;margin:20px auto;min-height:540px;background:white;border:1px solid #e3eaf0;border-radius:8px;overflow:hidden;@media(max-width:800px){grid-template-columns:1fr;max-width:480px;margin:0 auto;}`;
+export const Story = styled.aside`background:#eaf6fc;padding:48px;display:flex;flex-direction:column;justify-content:center;color:#234b60;h2{font-size:32px;line-height:1.25;letter-spacing:-1px;margin:18px 0;}p{font-size:14px;line-height:1.8;color:#628191;max-width:300px;}img{width:100%;max-width:250px;height:200px;object-fit:contain;align-self:center;margin-top:22px;}@media(max-width:800px){display:none;}`;
+export const Card = styled.section`padding:48px;display:flex;flex-direction:column;justify-content:center;min-width:0;h1{font-size:28px;color:#243f50;letter-spacing:-.6px;margin:14px 0 10px;}@media(max-width:500px){padding:28px 22px;}`;
+export const Eyebrow = styled.span`font-size:10px;letter-spacing:1.5px;font-weight:700;color:#53869e;`;
+export const Intro = styled.p`font-size:14px;line-height:1.7;color:#758895;margin:0 0 28px;`;
+export const Form = styled.form`display:flex;flex-direction:column;gap:18px;`;
+export const Field = styled.div`display:flex;flex-direction:column;gap:8px;`;
+export const Label = styled.label`font-size:13px;font-weight:600;color:#3d596a;`;
+export const Input = styled.input`width:100%;height:48px;box-sizing:border-box;border:1px solid #dce5eb;border-radius:6px;padding:0 13px;color:#28495c;background:white;font:inherit;font-size:14px;outline:none;&::placeholder{color:#99a6af;}&:focus{border-color:#008ecc;box-shadow:0 0 0 3px #008ecc18;}&[aria-invalid=true]{border-color:#c94b57;}&:disabled{background:#f7f9fb;}`;
+export const PasswordField = styled.div`position:relative;input{padding-right:50px;}`;
+export const Toggle = styled.button`position:absolute;right:4px;top:4px;width:40px;height:40px;border:0;background:transparent;color:#69818e;display:grid;place-items:center;cursor:pointer;border-radius:4px;font-size:19px;&:focus-visible{outline:2px solid #008ecc;}`;
+export const FieldError = styled.span`color:#b83748;font-size:12px;line-height:1.5;`;
+export const Alert = styled.p`padding:12px;margin:0;border:1px solid #f0cbd1;background:#fff6f7;border-radius:6px;color:#a63546;font-size:13px;line-height:1.6;`;
+export const Submit = styled.button`display:flex;align-items:center;justify-content:center;gap:12px;min-height:48px;border:0;border-radius:6px;background:#008ecc;color:white;font-weight:600;font-size:14px;cursor:pointer;&:hover:not(:disabled){background:#0075ab;}&:disabled{opacity:.65;cursor:wait;}&:focus-visible{outline:3px solid #174c65;outline-offset:3px;}`;
+export const FormLinks = styled.div`display:flex;justify-content:flex-end;margin-top:-4px;a{color:#197ea6;font-size:12px;text-decoration:none;&:hover{text-decoration:underline;}}`;
+export const Signup = styled.p`text-align:center;font-size:13px;line-height:1.8;color:#7b8c97;margin:4px 0 0;a{color:#1682ae;font-weight:600;text-decoration:none;&:hover{text-decoration:underline;}}`;
+export const SessionStatus = styled.p`text-align:center;padding:60px 20px;color:#68818f;`;
+
+export const Hint = styled.span`font-size:11px;color:#81929d;line-height:1.5;`;
+export const FieldRow = styled.div`display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;@media(max-width:500px){grid-template-columns:1fr;gap:18px;}`;
+export const RegisterLayout = styled(Layout)`grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);@media(max-width:800px){grid-template-columns:1fr;}`;
+export const RegisterCard = styled(Card)`padding:36px;@media(max-width:500px){padding:28px 22px;}`;

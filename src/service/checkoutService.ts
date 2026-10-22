@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "./api";
 
 
@@ -9,16 +9,15 @@ import { api } from "./api";
 type CreateCheckoutDirectData = {
     product_id: string,
     quantity: number
+    sku_id?: string
 }
 
 type CreateCheckoutCartData = {
-    products_id: string[];
+    cart_item_ids: string[];
 };
 
-const fetchGetCheckout = async (checkoutId: string) => {
-    const response = await api.get(`/checkout/${checkoutId}`)
-    return response.data
-}
+export type { CheckoutDetail } from "../features/checkout/types";
+export { useGetCheckout } from "../features/checkout/hooks/useCheckout";
 
 const fetchCreateCheckoutDirect = async (data: CreateCheckoutDirectData) => {
     const response = await api.post("/checkout/direct", data);
@@ -33,15 +32,6 @@ const fetchCreateCheckoutCart = async (data: CreateCheckoutCartData) => {
 const fetchUpdateAddress = async (checkout_id: string, address_id: string) => {
     const response = await api.put("/checkout/address", { checkout_id, address_id })
     return response.data
-}
-
-export function useGetCheckout(id:string){
-    
-    return useQuery({
-        queryKey: ["checkout"],
-        queryFn: () => fetchGetCheckout(id)
-    });
-    
 }
 
 export function useCreateCheckoutDirect() {

@@ -1,0 +1,18 @@
+import {createRoot} from 'react-dom/client';
+import {MemoryRouter,Routes,Route} from 'react-router-dom';
+import {ThemeProvider} from 'styled-components';
+import {QueryClient,QueryClientProvider} from '@tanstack/react-query';
+import {GlobalStyle} from './src/style/globalStyles';
+import theme from './src/style/theme';
+import ProfileLayout from './src/features/profile/pages/ProfileLayout';
+import OrdersPage from './src/features/orders/pages/OrdersPage';
+import {ordersApi} from './src/features/orders/api/ordersApi';
+import {useAuth} from './src/features/auth/model/authStore';
+import type {Order} from './src/features/orders/types';
+const client=new QueryClient();
+const rows:Order[]=[{checkoutId:'39406646-91ad-45cf-9fe3-08f261782e14',created_at:'2026-10-21T12:00:00Z',status:'paid',expires_at:null,payment_id:'demo',payment_method:'card',total:129.9,subtotal:149.9,discount:20,products:[{id:'1',product_id:'demo',sku_id:'blue',name:'Fone sem fio · Azul',image:null,quantity:1,price:129.9}]},{checkoutId:'39406646-91ad-45cf-9fe3-08f261782e15',created_at:'2026-10-20T12:00:00Z',status:'pending',expires_at:'2099-01-01',payment_id:'demo-pix',payment_method:'pix',total:89.9,subtotal:89.9,discount:0,products:[{id:'2',product_id:'demo',sku_id:'black',name:'Camiseta básica · Preto / M',image:null,quantity:1,price:89.9}]},{checkoutId:'39406646-91ad-45cf-9fe3-08f261782e16',created_at:'2026-10-19T12:00:00Z',status:'expired',expires_at:'2026-01-01',payment_id:null,payment_method:null,total:59.9,subtotal:59.9,discount:0,products:[{id:'3',product_id:'demo',sku_id:null,name:'Caneca de cerâmica · Branco',image:null,quantity:1,price:59.9}]}];
+let failed=false;
+ordersApi.list=async(page,status)=>{if(failed)throw Error('demo');const filtered=rows.filter(order=>status==='all'||(status==='closed'?order.status==='expired':status===order.status));return {success:true,data:{orders:filtered.slice((page-1)*2,page*2),pagination:{page,limit:2,totalItems:filtered.length,totalPages:Math.ceil(filtered.length/2)}}};};
+ordersApi.detail=async id=>({...rows.find(row=>row.checkoutId===id)!,address:{id:'demo',label:id.endsWith('e14')?'Casa de demonstração':'Outro endereço de demonstração',street:'Rua de exemplo',number:'100',district:'Centro',city:'Cidade de exemplo',postal_code:'00000-000',complement:null,reference:null}});
+useAuth.getState().setUser({name:'Ana Silva',email:'preview@example.invalid',cpf:''});
+createRoot(document.getElementById('root')!).render(<ThemeProvider theme={theme}><GlobalStyle/><QueryClientProvider client={client}><MemoryRouter initialEntries={['/profile/orders']}><aside style={{padding:12,textAlign:'center',background:'#e9f7ff',fontSize:12}}>Prévia local · Compras fictícias · Nenhum pagamento gerado <button onClick={()=>{failed=true;void client.invalidateQueries({queryKey:['orders']});}}>Simular erro</button></aside><Routes><Route path="/profile" element={<ProfileLayout/>}><Route path="orders" element={<OrdersPage/>}/></Route><Route path="*" element={<p>Destino da demonstração</p>}/></Routes></MemoryRouter></QueryClientProvider></ThemeProvider>);

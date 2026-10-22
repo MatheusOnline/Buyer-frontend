@@ -1,49 +1,14 @@
-import styled from "styled-components"
-import { Flex } from "../Components/UI/Flex/Flex"
+import styled from "styled-components";
+import { Header } from "../Components/Layout/Header/Header";
+import { Footer } from "@components/Features/Fooster/Footer";
 
-import { Header } from "../Components/Layout/Header/Header"
-import { Footer } from "@components/Features/Fooster/Footer"
-
-export function DefaultTemplate({ children }: { children: React.ReactNode }) {
-    return (
-        <Layout>
-            <Header />
-            <br />
-            <br />
-
-            <Flex flexDirection="column" alignItems="center" gap="2rem"  fullWidth={true} >
-                <ContainerdefaultTemplate >
-                    {children}
-                </ContainerdefaultTemplate>
-            </Flex>
-            <br />
-            <br />
-            <Footer />
-        </Layout>
-    )
+export function DefaultTemplate({children}: {children: React.ReactNode}) {
+    return <Layout><Header /><Content id="main-content">{children}</Content><Footer /></Layout>;
 }
-
-
-
-
 const Layout = styled.div`
-  min-height: 120vh;
-  display: flex;
-  flex-direction: column;
-
-  
-`
-
-
-const ContainerdefaultTemplate = styled.div`
-    width: 85%;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    flex: 1;
-    
-
-     @media (min-width: 1496px) {
-          width: 75%;
-    }
-`
+    min-height: 100vh; display: flex; flex-direction: column; background: #f7f9fb;
+`;
+const Content = styled.main`
+    width: min(1280px, calc(100% - 64px)); margin: 28px auto 64px; flex: 1; display: flex; flex-direction: column; gap: 36px; min-width: 0;
+    @media (max-width: 700px) { width: calc(100% - 32px); margin: 20px auto 40px; gap: 28px; }
+`;

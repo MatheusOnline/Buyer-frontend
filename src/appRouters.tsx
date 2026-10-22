@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
+import { RequireAuth } from "./features/auth/components/RequireAuth";
 import { Home } from "./Pages/Home/Index";
 const Product = lazy(() => import("./Pages/Announcement/index"));
 const CartPage = lazy(() => import("./Pages/Cart"));
@@ -20,34 +21,30 @@ const ProfileHome = lazy(() => import("./Pages/Profile/home"))
 const ProfileOrders = lazy(() => import("./Pages/Profile/orders"))
 const ProfileAnddress = lazy(() => import("./Pages/Profile/address"))
 
-export const AppRoutes = () => {
-  return (
-    <BrowserRouter>
-         <Suspense fallback={<div>Carregando...</div>}>
+export const AppRoutes = () => (
+  <BrowserRouter>
+    <Suspense fallback={<div role="status">Carregando...</div>}>
       <Routes>
-
         <Route path="/" element={<Home />} />
         <Route path="/product/:slug/:id" element={<Product />} />
-        <Route path="/cart" element={<CartPage/>}/>
-        <Route path="/favorites" element={<Favorites/>} />
-        <Route path="/search" element={<Search/>} />     
-        <Route path="/payment/checkout/:checkoutId" element={<Checkout/>}/> 
-        <Route path="/payment/pix/:checkoutId" element={<Payment/>} />
-        <Route path="/payment/card/:checkoutId" element={<Card/>} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/register" element={<Register />} />
+        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
 
-        {/*Rotas de autenticação */}
-        <Route path="/auth/login" element={<Login/>} />
-        <Route path="/auth/register" element={<Register/>} />
-        <Route path="/auth/forgot-password" element={<ForgotPassword/>} />
-
-        {/*Rotas do perfil do usario */}
-        <Route path="/profile" element={<ProfileLayout />}>
-          <Route index element={<ProfileHome />} />
-          <Route path="orders" element={<ProfileOrders />} />
-          <Route path="address" element={<ProfileAnddress/>} />
+        <Route element={<RequireAuth />}>
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/payment/checkout/:checkoutId" element={<Checkout />} />
+          <Route path="/payment/pix/:checkoutId" element={<Payment />} />
+          <Route path="/payment/card/:checkoutId" element={<Card />} />
+          <Route path="/profile" element={<ProfileLayout />}>
+            <Route index element={<ProfileHome />} />
+            <Route path="orders" element={<ProfileOrders />} />
+            <Route path="address" element={<ProfileAnddress />} />
+          </Route>
         </Route>
       </Routes>
-        </Suspense>
-    </BrowserRouter>
-  );
-};
+    </Suspense>
+  </BrowserRouter>
+);

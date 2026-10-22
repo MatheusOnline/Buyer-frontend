@@ -7,7 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:cart": "vitest run --config vitest.cart.config.ts",
+    "test:checkout": "vitest run --config vitest.checkout.config.ts",
+    "test:pix": "vitest run --config vitest.pix.config.ts",
+    "test:card": "vitest run --config vitest.card.config.ts",
+    "test:profile": "vitest run --config vitest.profile.config.ts",
+    "test:orders": "vitest run --config vitest.orders.config.ts"
   },
   "dependencies": {
     "@mercadopago/sdk-react": "^1.0.7",

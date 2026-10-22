@@ -1,21 +1,7 @@
 import { useEffect } from "react";
-import { useMe } from "./service/authService";
-import { useAuth } from "./stores/useAuthStore";
-
+import { useAuth } from "./features/auth/model/authStore";
 export function AppInitializer() {
-    const setUser = useAuth((state) => state.setUser);
-
-    const { data, isSuccess } = useMe();
-
-    useEffect(() => {
-        if (!isSuccess) return;
-
-        setUser({
-            name: data?.data?.name,
-            email: data?.data?.email,
-            cpf: data?.data?.cpf
-        });
-    }, [isSuccess, data, setUser]);
-
+    const fetchUser = useAuth(state => state.fetchUser);
+    useEffect(() => {void fetchUser();}, [fetchUser]);
     return null;
 }

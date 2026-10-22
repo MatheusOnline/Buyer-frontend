@@ -1,127 +1,238 @@
-import styled from "styled-components"
-import { Button } from "../../UI/Button"
-import { Flex } from "../../UI/Flex"
-import { Text } from "../../UI/Text"
-import { Like } from "../../UI/Like/Like"
-import { Assessment } from "../../UI/Assessment/Assessment"
-import CartIcon from "./../../../Assets/Svgs/CartNormal.svg"
-import { useNavigate } from "react-router-dom"
-import { useAuth } from "../../../stores/useAuthStore"
-import type { CardProductProps } from "../../../types/types"
-import { capitalizeWords } from "../../../functions/capitalizeWords"
-import { useAddItemToCart } from "../../../service/cartService"
+import { useState } from "react";
+import styled from "styled-components";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FiCheck, FiHeart, FiImage, FiShoppingCart } from "react-icons/fi";
+import { useAuth } from "../../../stores/useAuthStore";
+import { useLikedProduct } from "../../../service/likeService";
+import { useAddItemToCart } from "../../../service/cartService";
+import type { CardProductProps } from "../../../types/types";
 
+const currency = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
 function createSlug(text: string) {
-    return text
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "");
+    return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
+export function ProductCard({
+    original_price, store, title, image, id, code, assessment, current_price,
+    liked = false, from_price, available_stock, sku_count, promotion,
+}: CardProductProps) {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const user = useAuth(state => state.user);
+    const favorite = useLikedProduct();
+    const cart = useAddItemToCart();
+    const [imageFailed, setImageFailed] = useState(false);
+    const name = title || "Produto";
+    const original = Number(original_price);
+    const current = Number(current_price);
+    const onSale = Number.isFinite(current) && current > 0 && current < original;
+    const price = onSale ? current : original;
+    const url = `/product/${createSlug(name)}/${id}`;
+    const hasOptions = (sku_count ?? 0) > 1;
+    const soldOut = available_stock === 0;
+    const hasRating = Number.isFinite(assessment) && Number(assessment) > 0;
 
-export function ProductCard({ assessment, original_price, code, store, title, image, id, current_price,liked }: CardProductProps) {
-    const navigate = useNavigate()
-    const user = useAuth((state) => state.user);
-    
-    const { mutate: addItem } = useAddItemToCart();
-
-    function AddCart(e: React.MouseEvent){
-        e.stopPropagation();
-        
-        if(!user){
-            navigate("/auth/login")
-            return
+    function handleCart() {
+        if (hasOptions) {
+            navigate(url);
+            return;
         }
-        
-        addItem(id)
+        if (!user) {
+            navigate("/auth/login", {state:{from:url}});
+            return;
+        }
+        cart.mutate(id);
     }
 
-    return(
-        <CardStyled onClick={() => navigate(`/product/${createSlug(title)}/${id}`)}>
-            <Flex flexDirection="column"  gap="5px" alignItems="center">
-                
-                <Flex fullWidth={true} justifyContent="space-between" alignItems="center">
-                    <Like liked={liked ?? false} product_id={id}/> 
-                    <Text fontWeight="semi-bold" fontSize="extra-small" color="secondary">#{code}</Text>
-                </Flex>
-                <ImageFrame>
-                    <Img src={image} alt="Product" />
-                </ImageFrame>
-                <Flex flexDirection="column" fullWidth={true} alignItems="start" >
-                    <Assessment value={assessment} />
-                    <Info>
-                        <Text fontWeight="semi-bold" fontSize="normal" >{capitalizeWords(title)}</Text>
-                        <Text fontWeight="normal" fontSize="extra-small" color="secondary">{store}</Text>
-                    </Info>
-                </Flex>
-                
-                <Flex fullWidth={true} justifyContent="space-between" alignItems="end">
+    return (
+        <Card>
+            <CardHeader>
+                <Favorite
+                    type="button"
+                    aria-label={liked ? `Remover ${name} dos favoritos` : `Favoritar ${name}`}
+                    aria-pressed={liked}
+                    disabled={favorite.isPending}
+                    $liked={liked}
+                    onClick={() => user ? favorite.mutate(id) : navigate("/auth/login", {state:{from:location.pathname + location.search}})}
+                >
+                    <FiHeart aria-hidden="true" />
+                </Favorite>
+                <ProductCode title={`Código ${code}`}>#{code}</ProductCode>
+            </CardHeader>
 
-                    {current_price ? (
-                    <Flex gap="1px" alignItems="start" flexDirection="column">
-                        <Text  fontWeight="normal" fontSize="small" color="secondary" through={true}>R${original_price}</Text>
-                        <Text fontWeight="semi-bold" fontSize="medium">R${current_price}</Text>
-                    </Flex>
-                    ):(
-                    <Text fontWeight="semi-bold" fontSize="medium">R${original_price}</Text>
-                    )} 
-                    <Button variant="contained" palette="primary" icon={true} onclick={ AddCart}><img src={CartIcon} alt="" /></Button>
-                </Flex>
-            </Flex>
-        </CardStyled>
-    )
+            <ImageLink to={url} aria-label={`Ver ${name}`}>
+                {image && !imageFailed ? (
+                    <img src={image} alt={name} loading="lazy" decoding="async" onError={() => setImageFailed(true)} />
+                ) : (
+                    <MissingImage><FiImage /><span>Imagem indisponível</span></MissingImage>
+                )}
+            </ImageLink>
+
+            <CardInfo>
+                {hasRating && (
+                    <Rating aria-label={`Avaliação: ${assessment} de 5`}>
+                        <span aria-hidden="true">{"★".repeat(Math.round(Math.min(5, Number(assessment))))}</span>
+                        <small>({Number(assessment).toLocaleString("pt-BR", { maximumFractionDigits: 1 })})</small>
+                    </Rating>
+                )}
+                <ProductName to={url}>{name}</ProductName>
+                <Store>{store || "Loja local"}</Store>
+
+                <PurchaseRow>
+                    <PriceBlock>
+                        {from_price && <small>A partir de</small>}
+                        <PriceLine>
+                            <strong>{Number.isFinite(price) ? currency.format(price) : "Consulte"}</strong>
+                            {onSale && <del title={promotion?.name}>{currency.format(original)}</del>}
+                        </PriceLine>
+                    </PriceBlock>
+                    <CartButton
+                        type="button"
+                        disabled={soldOut || cart.isPending}
+                        aria-label={soldOut ? `${name} sem estoque` : hasOptions ? `Escolher opções de ${name}` : `Adicionar ${name} ao carrinho`}
+                        title={soldOut ? "Sem estoque" : hasOptions ? "Escolher opções" : "Adicionar ao carrinho"}
+                        aria-busy={cart.isPending}
+                        onClick={handleCart}
+                    >
+                        {cart.isSuccess ? <FiCheck aria-hidden="true" /> : <FiShoppingCart aria-hidden="true" />}
+                    </CartButton>
+                </PurchaseRow>
+                {soldOut && <Availability>Sem estoque no momento</Availability>}
+                {cart.isSuccess && <ScreenReaderStatus role="status">Produto adicionado ao carrinho.</ScreenReaderStatus>}
+                {(favorite.isError || cart.isError) && (
+                    <ErrorText role="alert">{cart.isError ? "Não foi possível adicionar ao carrinho." : "Não foi possível atualizar os favoritos."}</ErrorText>
+                )}
+            </CardInfo>
+        </Card>
+    );
 }
 
-
-
-
-const CardStyled = styled.button`
+const Card = styled.article`
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    cursor: pointer;
-    background-color: ${({ theme }) => theme.colors.background_color};
-    border: 1px solid ${({ theme }) => theme.colors.neutro_color_300};
-    border-radius: 8px;
     padding: 12px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    box-sizing: border-box;
-    transition: 0.3s ease;
-    &:hover {
+    border: 1px solid #edf0f3;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 5px 18px rgba(35, 47, 58, .08);
+    transition: box-shadow .2s, transform .2s;
 
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    }
-`
-
-const ImageFrame = styled.div`
-    width: 100%;
-    height: 140px; /* ou o tamanho que quiser */
+    &:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(35, 47, 58, .13); }
+    a:focus-visible, button:focus-visible { outline: 2px solid #008ecc; outline-offset: 3px; border-radius: 4px; }
+    @media(max-width: 550px) { padding: 10px; border-radius: 6px; }
+`;
+const CardHeader = styled.div`
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
+`;
+const Favorite = styled.button<{ $liked: boolean }>`
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 6px;
+    background: #fff;
+    color: ${({ $liked }) => $liked ? "#ff4048" : "#454b52"};
+    box-shadow: 0 4px 12px rgba(30, 40, 50, .16);
+    cursor: pointer;
+    svg { width: 20px; height: 20px; stroke-width: 1.5; fill: ${({ $liked }) => $liked ? "#ff4048" : "none"}; }
+    &:disabled { opacity: .5; }
+`;
+const ProductCode = styled.span`
+    min-width: 0;
+    color: #a4adb8;
+    font-size: 9px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+const ImageLink = styled(Link)`
+    display: flex;
+    height: 155px;
+    padding: 12px 14px 8px;
     align-items: center;
     justify-content: center;
+    img { width: 100%; height: 100%; object-fit: contain; transition: transform .2s; }
+    &:hover img { transform: scale(1.04); }
+    @media(max-width: 550px) { height: 132px; padding: 10px 6px 8px; }
+`;
+const MissingImage = styled.div`
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    color: #a1afba;
+    svg { width: 30px; height: 30px; }
+    span { font-size: 9px; }
+`;
+const CardInfo = styled.div`display: flex; flex-direction: column; flex: 1; padding: 8px 2px 2px; min-width: 0;`;
+const ProductName = styled(Link)`
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    
-`
-
-const Img = styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-`
-
-const Info = styled.div`
+    min-height: 38px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+    text-decoration: none;
+    color: #323439;
+    @media(max-width: 550px) { font-size: 12px; min-height: 35px; }
+`;
+const Store = styled.p`
+    margin-top: 3px;
+    color: #89919e;
+    font-size: 11px;
+    line-height: 1.5;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    @media(max-width: 550px) { font-size: 10px; }
+`;
+const Rating = styled.div`
     display: flex;
-    flex-direction: column;
-
-    max-width: 100%;
-    text-align: start;
-
-    p{
-        white-space: nowrap;
-        overflow: hidden;   
-        text-overflow: ellipsis;
-       
-    }
-`
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+    span { color: #ff922b; font-size: 12px; letter-spacing: 1px; }
+    small { color: #89919e; font-size: 10px; }
+`;
+const PurchaseRow = styled.div`display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 18px;`;
+const PriceBlock = styled.div`min-width: 0; small { display: block; margin-bottom: 3px; font-size: 9px; color: #89919e; }`;
+const PriceLine = styled.div`
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 3px 6px;
+    strong { color: #323439; font-size: 20px; font-weight: 700; letter-spacing: -.65px; white-space: nowrap; line-height: 1.3; }
+    del { color: #adb5bd; font-size: 9px; white-space: nowrap; }
+    @media(max-width: 550px) { strong { font-size: 17px; letter-spacing: -.6px; } del { font-size: 8px; } }
+`;
+const CartButton = styled.button`
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 4px;
+    background: #36c5fa;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s;
+    svg { width: 22px; height: 22px; stroke-width: 2; }
+    &:hover { background: #0caeeb; }
+    &:disabled { background: #c6d5df; cursor: not-allowed; }
+    @media(max-width: 550px) { width: 32px; height: 34px; svg { width: 20px; height: 20px; } }
+`;
+const Availability = styled.p`font-size: 9px; color: #89919e; margin-top: 6px;`;
+const ErrorText = styled.p`font-size: 10px; color: #b42318; margin-top: 8px;`;
+const ScreenReaderStatus = styled.span`position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;`;

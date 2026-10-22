@@ -1,54 +1,17 @@
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "../features/auth/model/authStore";
 import { api } from "./api";
 
 
 
 
-const fetchMe = async () => {
-  const response = await api.get("/auth/me")
+import { authApi } from "../features/auth/api/authApi";
+export { useLogin } from "../features/auth/hooks/useLogin";
+const fetchMe = authApi.me;
+const fetchLogout = authApi.logout;
 
-  return response.data
-}
-
-const fetchLogout = async () => {
-  const response = await api.post("/auth/logout")
-
-  return response.data
-}
-
-
-const fetchlogin = async (value: loginDatas) => {
-    const response = await api.post(
-        "/auth/login",
-        value
-    );
-
-    return response.data;
-};
-
-export function useLogin() {
-  return useMutation({
-    mutationFn: fetchlogin,
-  });
-}
-
-
-const fetchRegister = async (value:RegisterDatas) => {
-    const response = await api.post(
-        "/auth/register ",
-        value
-    )
-
-    return response.data
-}
-
-export function useRegister() {
-  return useMutation({
-    mutationFn: fetchRegister,
-  });
-}
-
+export { useRegister } from "../features/auth/hooks/useRegister";
 
 const fetchForgorPassword = async (email:string) => {
     const response = await api.post(
@@ -101,23 +64,14 @@ export function useMe(){
 }
 
 export function useLogout(){
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: fetchLogout,
+    onSuccess: () => {
+      useAuth.getState().logout();
+      queryClient.clear();
+    },
   })
-}
-
-type loginDatas = {
-    email: string,
-    password: string
-}
-
-type RegisterDatas = {
-    firstname: string,
-    lastname: string,
-    phone: string,
-    email: string,
-    cpf: string,
-    password: string
 }
 
 type VerifyCode = {

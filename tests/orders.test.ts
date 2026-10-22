@@ -1,0 +1,13 @@
+import {afterEach,expect,it,vi} from 'vitest';
+import {api} from '../src/service/api';
+import {ordersApi} from '../src/features/orders/api/ordersApi';
+import {orderDate,orderFilter,orderPage,orderStatus,paymentLink} from '../src/features/orders/utils/orders';
+import type {Order} from '../src/features/orders/types';
+const order={checkoutId:'demo',status:'pending',expires_at:'2030-01-01',payment_id:null,payment_method:null} as Order;
+afterEach(()=>vi.restoreAllMocks());
+it('requests the authenticated purchase history with filters and pagination',async()=>{const signal=new AbortController().signal;const get=vi.spyOn(api,'get').mockResolvedValue({data:{success:true,data:{orders:[]}}});await ordersApi.list(2,'paid',signal);expect(get).toHaveBeenCalledWith('/checkout',{params:{page:2,status:'paid'},signal});});
+it('loads the selected purchase instead of fixed demo details',async()=>{const get=vi.spyOn(api,'get').mockResolvedValue({data:order});await ordersApi.detail('selected');expect(get).toHaveBeenCalledWith('/checkout/selected',{signal:undefined});});
+it('distinguishes confirmed purchases, expired checkouts and payment awaiting confirmation',()=>{const now=new Date('2031-01-01').getTime();expect(orderStatus(order,now).label).toBe('Compra expirada');expect(orderStatus({...order,status:'paid'},now).key).toBe('paid');expect(orderStatus({...order,payment_id:'payment'},now).label).toBe('Aguardando confirmação');expect(orderStatus({...order,status:'cancelled'},now).key).toBe('closed');});
+it('uses the existing payment route without creating another charge',()=>{expect(paymentLink({...order,expires_at:'2099-01-01'})).toBe('/payment/checkout/demo');expect(paymentLink({...order,payment_id:'payment',payment_method:'pix'})).toBe('/payment/pix/demo');expect(paymentLink({...order,payment_id:'payment',payment_method:'card'})).toBe('/payment/card/demo');expect(paymentLink({...order,status:'cancelled'})).toBeNull();expect(paymentLink({...order,status:'paid'})).toBeNull();});
+it('normalizes invalid filters and page parameters',()=>{expect(orderFilter('delivered')).toBe('all');expect(orderFilter('paid')).toBe('paid');for(const value of ['0','-1','1.5','Infinity','100001',null])expect(orderPage(value)).toBe(1);expect(orderPage('2')).toBe(2);});
+it('handles missing dates without inventing a purchase date',()=>{expect(orderDate(null)).toBe('Data indisponível');expect(orderDate('bad')).toBe('Data indisponível');expect(orderDate('2026-10-21T12:00:00Z')).toContain('2026');});

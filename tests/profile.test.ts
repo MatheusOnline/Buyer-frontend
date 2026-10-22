@@ -1,0 +1,14 @@
+import {afterEach,expect,it,vi} from 'vitest';
+import {AxiosError} from 'axios';
+import {api} from '../src/service/api';
+import {profileApi} from '../src/features/profile/api/profileApi';
+import {initials,profileChanged,profileDraft,profilePayload,profileValidation} from '../src/features/profile/utils/profileForm';
+import {useAuth} from '../src/features/auth/model/authStore';
+const profile={id:'demo',firstname:'Ana',lastname:'Silva',email:'ana@example.invalid',phone:'44999999999',cpf:'00000000000'};
+afterEach(()=>vi.restoreAllMocks());
+it('saves to the authenticated user endpoint, without identity fields in the payload',async()=>{const response={success:true,data:profile};const patch=vi.spyOn(api,'patch').mockResolvedValue({data:response});const payload=profilePayload({...profileDraft(profile),firstname:'  Ana Maria  ',email:' ANA@EXAMPLE.INVALID ',phone:'(44) 99999-9999'});expect(await profileApi.update(payload)).toEqual(response);expect(patch).toHaveBeenCalledWith('/user',{firstname:'Ana Maria',email:'ana@example.invalid',phone:'44999999999'});});
+it('rejects incomplete edits and invalid email or mobile number',()=>{expect(profileValidation({firstname:' ',email:'bad',phone:'123'})).toEqual({firstname:expect.any(String),email:expect.any(String),phone:expect.any(String)});expect(profileValidation(profileDraft(profile))).toEqual({});});
+it('ignores formatting-only changes and detects real edits',()=>{expect(profileChanged({...profileDraft(profile),phone:'(44) 99999-9999',email:' ANA@EXAMPLE.INVALID '},profile)).toBe(false);expect(profileChanged({...profileDraft(profile),firstname:'Ana Maria'},profile)).toBe(true);});
+it('fetches the profile with cancellation support',async()=>{const controller=new AbortController();const get=vi.spyOn(api,'get').mockResolvedValue({data:{success:true,data:profile}});await profileApi.get(controller.signal);expect(get).toHaveBeenCalledWith('/user',{signal:controller.signal});});
+it('expires the local session when the API denies authentication',async()=>{useAuth.getState().setUser({name:'Ana',email:profile.email,cpf:profile.cpf});const error=new AxiosError('unauthorized');error.response={status:401} as AxiosError['response'];vi.spyOn(api,'get').mockRejectedValue(error);await expect(profileApi.get()).rejects.toBe(error);expect(useAuth.getState().user).toBeNull();});
+it('uses the actual user initials and a fallback for an empty name',()=>{expect(initials(' Ana Silva ')).toBe('AS');expect(initials('Ana')).toBe('A');expect(initials('')).toBe('CL');});
