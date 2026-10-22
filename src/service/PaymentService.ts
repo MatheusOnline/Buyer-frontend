@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { api } from "../service/api";
+import { api } from "./api";
 
 /* =========================
    TYPES

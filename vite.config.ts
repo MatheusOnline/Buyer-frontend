@@ -1,44 +1,14 @@
-/// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import svgr from "vite-plugin-svgr";
-// https://vite.dev/config/
+import svgr from 'vite-plugin-svgr';
 import path from 'node:path';
-import { playwright } from '@vitest/browser-playwright';
 
-// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  plugins: [react(), svgr({
-  svgrOptions: {
-    icon: true,
-    },
-  })],
+  plugins: [react(), svgr({ svgrOptions: { icon: true } })],
   resolve: {
     alias: {
       '@components': path.resolve(__dirname, './src/Components'),
       '@assets': path.resolve(__dirname, './src/Assets'),
-      
     },
   },
-
-  test: {
-    projects: [{
-      extends: true,
-      plugins: [
-      // The plugin will run tests for the stories defined in your Storybook config
-      // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-      ],
-      test: {
-        name: 'storybook',
-        browser: {
-          enabled: true,
-          headless: true,
-          provider: playwright({}),
-          instances: [{
-            browser: 'chromium'
-          }]
-        }
-      }
-    }]
-  }
 });

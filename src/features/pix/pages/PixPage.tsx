@@ -17,13 +17,13 @@ function PixContent({checkoutId}:{checkoutId:string}) {
     const refreshed=useRef(false);
     const payment=query.data?.data;
     const state=payment ? pixState(payment,now) : "unavailable";
-    const message=pixMessages[state];
+    const message=payment?.order_pending&&state==='approved'?{title:'Pagamento aprovado, preparando seu pedido',description:'Seu Pix foi confirmado. Estamos registrando o pedido para a loja; aguarde a atualização automática.'}:pixMessages[state];
     useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),1000);return ()=>clearInterval(timer);},[]);
     useEffect(()=>{
-        if(state!=="approved" || refreshed.current)return;
+        if(state!=="approved" || payment?.order_pending || refreshed.current)return;
         refreshed.current=true;
         for(const key of ["cart","checkout","orders"])void client.invalidateQueries({queryKey:[key]});
-    },[state,client]);
+    },[state,client,payment?.order_pending]);
     return <DefaultTemplate><ScrollToTop/><Breadcrumb aria-label="Navegação do pagamento"><Link to="/">Início</Link><FiChevronRight/><Link to="/cart">Carrinho</Link><FiChevronRight/><span>Pagamento Pix</span></Breadcrumb>
         <Heading><div><small>ÚLTIMA ETAPA DA SUA COMPRA</small><h1>{state === "approved" && payment ? "Seu pagamento foi confirmado" : "Pagamento com Pix"}</h1><p>Confira o valor e acompanhe a confirmação por aqui.</p></div><Back to={`/payment/checkout/${checkoutId}`}><FiArrowLeft/>Voltar ao checkout</Back></Heading>
         {query.isLoading ? <Layout aria-busy="true" aria-label="Carregando pagamento Pix"><Skeleton height="540px"/><Skeleton height="340px"/></Layout> : !payment ? <Result role="alert"><FiXCircle/><h2>Não foi possível carregar o Pix</h2><p>{pixError(query.error)}</p><Actions><Button type="button" disabled={query.isFetching} onClick={()=>query.refetch()}>{query.isFetching ? "Consultando…" : "Tentar novamente"}</Button><Back to={`/payment/checkout/${checkoutId}`}>Revisar checkout</Back></Actions></Result> : <Layout>

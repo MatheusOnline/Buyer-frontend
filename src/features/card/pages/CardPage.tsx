@@ -28,12 +28,12 @@ function CardContent({id}:{id:string}) {
     const payment=status.data?.data??result;
     const approved=payment ? payment.status==='approved' : detail?.status==='paid';
     const state=approved?'approved':cardState(payment?.status);
-    const message=cardMessages[state];
+    const message=payment?.order_pending&&approved?{title:'Pagamento aprovado, preparando seu pedido',description:'O pagamento foi confirmado. Estamos registrando o pedido para a loja; esta página acompanha a atualização. Não é necessário pagar novamente.'}:cardMessages[state];
     const expired=detail?.status==='expired'||(detail?.expires_at&&new Date(detail.expires_at).getTime()<=now);
     const blocked=detail?.status==='cancelled'||expired||!detail?.address||!Number.isFinite(Number(detail?.total))||Number(detail?.total)<=0;
     const hasPayment=!!detail?.payment_id||!!payment||uncertain||approved;
     useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(timer);},[]);
-    useEffect(()=>{if(approved)for(const key of ['checkout','cart','orders'])void client.invalidateQueries({queryKey:[key]});},[approved,client]);
+    useEffect(()=>{if(approved)for(const key of ['checkout','cart','orders'])void client.invalidateQueries({queryKey:[key]});},[approved,client,payment?.order_pending]);
     async function pay(body:CardRequest) {
         if(submitting.current||hasPayment||blocked)return;
         submitting.current=true;

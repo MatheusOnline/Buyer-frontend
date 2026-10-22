@@ -13,7 +13,8 @@
     "test:pix": "vitest run --config vitest.pix.config.ts",
     "test:card": "vitest run --config vitest.card.config.ts",
     "test:profile": "vitest run --config vitest.profile.config.ts",
-    "test:orders": "vitest run --config vitest.orders.config.ts"
+    "test:orders": "vitest run --config vitest.orders.config.ts",
+    "test:addresses": "vitest run --config vitest.addresses.config.ts"
   },
   "dependencies": {
     "@mercadopago/sdk-react": "^1.0.7",
@@ -35,25 +36,17 @@
     "zustand": "^5.0.13"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^5.1.2",
     "@eslint/js": "^9.39.4",
-    "@storybook/addon-a11y": "^10.3.5",
-    "@storybook/addon-docs": "^10.3.5",
-    "@storybook/addon-onboarding": "^10.3.5",
-    "@storybook/addon-vitest": "^10.3.5",
     "@types/node": "^24.12.4",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/react-input-mask": "^3.0.6",
     "@vitejs/plugin-react": "^6.0.1",
-    "@vitest/browser-playwright": "^4.1.5",
     "@vitest/coverage-v8": "^4.1.5",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
-    "eslint-plugin-storybook": "^10.3.5",
     "globals": "^17.5.0",
-    "playwright": "^1.59.1",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.9",
