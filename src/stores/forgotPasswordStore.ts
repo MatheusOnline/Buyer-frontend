@@ -1,11 +1,8 @@
 import { create } from "zustand";
-import axios from "axios";
+import { api } from "../service/api";
 
 
-const api = axios.create({
-  baseURL: "http://localhost:3000/v1/auth",
-  withCredentials: true,
-});
+
 
 interface user{
     name: string,
@@ -93,7 +90,7 @@ export const useForgotPasswordStore = create<ForgotPasswordProps>((set) => ({
 
     emailFunction: async (email: string) => {
         try{
-            const {data} = await api.post("/email",{email})
+            const {data} = await api.post("/auth/email",{email})
             return data
         }catch(error){
             console.log(error)
@@ -103,7 +100,7 @@ export const useForgotPasswordStore = create<ForgotPasswordProps>((set) => ({
 
     codeFunction: async (code: string) => {
         try{
-            const {data} = await api.post("/code",{code})
+            const {data} = await api.post("/auth/code",{code})
 
              set({
                 resetToken: data.resetToken,
@@ -117,7 +114,7 @@ export const useForgotPasswordStore = create<ForgotPasswordProps>((set) => ({
 
     newPasswordFunction: async (password: string, resetToken: string) => {
         try{
-            const {data} = await api.post("/newpassword",{ password,resetToken})
+            const {data} = await api.post("/auth/newpassword",{ password,resetToken})
             console.log(data)
             return data
         }catch(error){

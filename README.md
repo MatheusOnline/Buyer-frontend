@@ -1,3 +1,15 @@
+## URL da API
+
+Defina `VITE_API_URL` no `.env` local ou nas variáveis do projeto na Vercel:
+
+```env
+VITE_API_URL=https://sua-api.onrender.com
+```
+
+A aplicação acrescenta `/v1` quando necessário. Sem a variável, usa `http://localhost:3000` para desenvolvimento. A recuperação de senha também usa essa configuração.
+
+Reinicie o Vite após alterar o `.env`. Na Vercel, configure a variável para Production e faça um novo deploy. Variáveis `VITE_` são públicas; não inclua senhas ou tokens privados nelas.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
