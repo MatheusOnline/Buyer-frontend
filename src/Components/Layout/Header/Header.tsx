@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { FiArrowUpRight, FiHeart, FiSearch, FiShoppingBag, FiUser } from "react-icons/fi";
-import Logo from "@assets/Img/Logos/PrimaryLogo.png";
+import Logo from "@assets/Img/Logos/PrimaryLogo.webp";
 import { useAuth } from "../../../stores/useAuthStore";
 
 export const Header = () => {
