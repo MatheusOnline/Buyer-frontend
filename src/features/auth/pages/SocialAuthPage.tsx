@@ -1,0 +1,32 @@
+import {useEffect,useState,type FormEvent} from 'react';
+import {Link,useNavigate,useSearchParams} from 'react-router-dom';
+import {useMutation,useQuery,useQueryClient} from '@tanstack/react-query';
+import {DefaultTemplate} from '../../../Template/DefaultTemplate';
+import {ScrollToTop} from '../../../Components/UI/ScrollToTop';
+import {authApi} from '../api/authApi';
+import {socialAuthApi} from '../api/socialAuthApi';
+import {completeAuthentication} from '../model/completeAuthentication';
+import {getLoginDestination} from '../utils/redirect';
+import {socialFormError} from '../utils/socialErrors';
+import {formatCpf,formatPhone,isValidCpf} from '../utils/registerValidation';
+import {AuthField} from '../components/AuthField';
+import {Alert,Card,Eyebrow,FieldRow,Form,Hint,Intro,Layout,SessionStatus,Signup,Story,Submit} from '../components/auth.styles';
+import image from '../../../Assets/Svgs/Auth/login.svg';
+export default function SocialAuthPage(){
+ const [params]=useSearchParams(),navigate=useNavigate(),client=useQueryClient();const done=params.get('done')==='1';
+ const pending=useQuery({queryKey:['social-pending'],queryFn:socialAuthApi.pending,enabled:!done,retry:false,staleTime:0,gcTime:0});
+ const [values,setValues]=useState({firstname:'',lastname:'',cpf:'',phone:'',password:'',account_email:''});const [manualLink,setManualLink]=useState(false);const [message,setMessage]=useState('');
+ const session=useQuery({queryKey:['social-session'],queryFn:authApi.me,enabled:done,retry:false,gcTime:0,staleTime:0});
+ useEffect(()=>{if(session.data){completeAuthentication(client,session.data);navigate(getLoginDestination(params.get('redirect')),{replace:true});}},[session.data,client,navigate,params]);
+ useEffect(()=>{if(pending.data)setValues(v=>({...v,firstname:pending.data.firstname,lastname:pending.data.lastname,account_email:pending.data.email}));},[pending.data]);
+ const mutation=useMutation({mutationFn:socialAuthApi.complete,onSuccess:response=>{completeAuthentication(client,response);navigate(getLoginDestination(response.destination),{replace:true});},onError:error=>setMessage(socialFormError(error))});
+ const data=pending.data;const linking=data?.kind==='link'||manualLink;
+ async function submit(event:FormEvent){event.preventDefault();setMessage('');if(!data)return;
+  if(linking){if((data.requires_password||manualLink)&&!values.password){setMessage('Informe a senha da sua conta para confirmar o vínculo.');return;}}
+  else if(!values.firstname.trim()||!values.lastname.trim()||!isValidCpf(values.cpf)||values.phone.replace(/\D/g,'').length!==11){setMessage('Confira seu nome, sobrenome, CPF e celular com DDD.');return;}
+  mutation.mutate(linking?{password:values.password,...(manualLink?{account_email:values.account_email.trim().toLowerCase()}:{})}:{firstname:values.firstname,lastname:values.lastname,cpf:values.cpf,phone:values.phone});
+ }
+ function update(name:keyof typeof values,value:string){setValues(v=>({...v,[name]:name==='cpf'?formatCpf(value):name==='phone'?formatPhone(value):value}));setMessage('');}
+ const waiting=done?session.isPending:pending.isPending;
+ return <DefaultTemplate><ScrollToTop/>{waiting?<SessionStatus role="status">Confirmando seu acesso…</SessionStatus>:<Layout><Story><Eyebrow>SUA CONTA COMPRAS LOCAL</Eyebrow><h2>Falta pouco para continuar.</h2><p>Seu acesso social fica vinculado à sua conta para você acompanhar compras, endereços e favoritos no mesmo lugar.</p><img src={image} alt=""/></Story><Card><Eyebrow>ACESSO COM {data?.provider==='apple'?'APPLE':'GOOGLE'}</Eyebrow>{pending.isError||session.isError?<><h1>Vamos tentar novamente?</h1><Alert role="alert">{done?'Não conseguimos abrir sua sessão. Verifique se o navegador permite cookies e tente novamente.':socialFormError(pending.error)}</Alert><Signup><Link to="/auth/login">Voltar para entrar</Link></Signup></>:data?<><h1>{linking?'Vincule sua conta.':'Complete seu cadastro.'}</h1><Intro>{linking?'Confirme o acesso à sua conta existente para manter seus pedidos e favoritos.':'Precisamos apenas destes dados para concluir sua conta e suas compras.'}</Intro><Form onSubmit={submit} noValidate aria-busy={mutation.isPending}><AuthField id="social-email" label="E-mail confirmado pelo provedor" value={data.email} disabled readOnly type="email"/>{linking?<>{manualLink&&<AuthField id="social-account-email" label="E-mail da sua conta ComprasLocal" type="email" autoComplete="username" value={values.account_email} onChange={e=>update('account_email',e.target.value)} disabled={mutation.isPending}/ >}{(data.requires_password||manualLink)?<AuthField id="social-password" label="Senha da sua conta ComprasLocal" password autoComplete="current-password" value={values.password} onChange={e=>update('password',e.target.value)} disabled={mutation.isPending}/>:<Hint>Você já está conectado à conta que será vinculada.</Hint>}</>:<><FieldRow><AuthField id="social-firstname" label="Nome" autoComplete="given-name" maxLength={100} value={values.firstname} onChange={e=>update('firstname',e.target.value)} disabled={mutation.isPending}/><AuthField id="social-lastname" label="Sobrenome" autoComplete="family-name" maxLength={100} value={values.lastname} onChange={e=>update('lastname',e.target.value)} disabled={mutation.isPending}/></FieldRow><FieldRow><AuthField id="social-cpf" label="CPF" inputMode="numeric" maxLength={14} placeholder="000.000.000-00" value={values.cpf} onChange={e=>update('cpf',e.target.value)} disabled={mutation.isPending}/><AuthField id="social-phone" label="Celular" autoComplete="tel-national" inputMode="tel" maxLength={15} placeholder="(00) 00000-0000" value={values.phone} onChange={e=>update('phone',e.target.value)} disabled={mutation.isPending}/></FieldRow><Hint>Você usará Google ou Apple para entrar. Não precisa criar outra senha.</Hint></>}{message&&<Alert role="alert">{message}</Alert>}<Submit disabled={mutation.isPending} type="submit">{mutation.isPending?'Concluindo…':linking?'Vincular e entrar':'Concluir cadastro e entrar'}</Submit>{data.kind==='register'&&<Signup><button type="button" disabled={mutation.isPending} onClick={()=>{setManualLink(!manualLink);setMessage('');}} style={{background:'none',border:0,color:'#1682ae',cursor:'pointer',font:'inherit',textDecoration:'underline'}}>{manualLink?'Criar uma nova conta':'Já tenho uma conta ComprasLocal'}</button></Signup>}<Signup><Link to="/auth/login">Escolher outra forma de entrar</Link></Signup></Form></>:<SessionStatus role="status">Abrindo sua conta…</SessionStatus>}</Card></Layout>}</DefaultTemplate>;
+}

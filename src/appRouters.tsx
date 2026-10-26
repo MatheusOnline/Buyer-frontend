@@ -12,6 +12,7 @@ const Payment = lazy(() => import("./Pages/Payment"));
 const Card = lazy(() => import("./Pages/Payment/Card"));
 
 const Login = lazy(() => import("./Pages/auth/login"));
+const SocialAuth = lazy(() => import("./features/auth/pages/SocialAuthPage"));
 const Register = lazy(() => import("./Pages/auth/register"));
 const ForgotPassword = lazy(() => import("./Pages/auth/forgotPassword"));
 
@@ -29,6 +30,7 @@ export const AppRoutes = () => (
         <Route path="/product/:slug/:id" element={<Product />} />
         <Route path="/search" element={<Search />} />
         <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/social" element={<SocialAuth />} />
         <Route path="/auth/register" element={<Register />} />
         <Route path="/auth/forgot-password" element={<ForgotPassword />} />
 

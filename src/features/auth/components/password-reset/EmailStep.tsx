@@ -1,0 +1,4 @@
+import type {PasswordResetFlow} from '../../hooks/usePasswordReset';
+import {AuthField} from '../AuthField';
+import {Form,Submit,Hint} from '../auth.styles';
+export function EmailStep({flow}:{flow:PasswordResetFlow}){return <Form noValidate aria-busy={flow.busy} onSubmit={event=>{event.preventDefault();void flow.request();}}><AuthField id="recovery-email" label="E-mail da sua conta" type="email" inputMode="email" autoComplete="email" autoCapitalize="none" spellCheck={false} maxLength={255} placeholder="seuemail@exemplo.com" value={flow.email} onChange={e=>flow.updateEmail(e.target.value)} error={flow.errors.email} disabled={flow.busy}/><Submit type="submit" disabled={flow.busy}>{flow.busy?'Solicitando código…':'Enviar código de recuperação'}</Submit><Hint>Se você entrou com Google ou Apple, também pode voltar ao login e usar o mesmo acesso social.</Hint></Form>;}

@@ -1,0 +1,14 @@
+import {useEffect,useRef} from 'react';
+import {Link} from 'react-router-dom';
+import {FiArrowLeft,FiCheck} from 'react-icons/fi';
+import {DefaultTemplate} from '../../../Template/DefaultTemplate';
+import {ScrollToTop} from '../../../Components/UI/ScrollToTop';
+import image from '../../../Assets/Svgs/Auth/forgot.svg';
+import {usePasswordReset} from '../hooks/usePasswordReset';
+import {Alert,Card,Eyebrow,Intro,Layout,Signup,Story} from '../components/auth.styles';
+import {Steps,Info,SuccessMark} from '../components/password-reset/reset.styles';
+import {EmailStep} from '../components/password-reset/EmailStep';
+import {CodeStep} from '../components/password-reset/CodeStep';
+import {NewPasswordStep} from '../components/password-reset/NewPasswordStep';
+const labels={email:['Recupere seu acesso.','Informe o e-mail usado no seu cadastro. Vamos ajudar você a criar uma nova senha.'],code:['Confira seu e-mail.','Digite o código de recuperação para confirmar que este acesso é seu.'],password:['Crie uma nova senha.','Seu código foi confirmado. Escolha uma senha diferente da anterior.'],success:['Senha atualizada.','Tudo pronto. Use sua nova senha para entrar na conta e continuar suas compras.']};
+export default function ForgotPasswordPage(){const flow=usePasswordReset();const heading=useRef<HTMLHeadingElement>(null);useEffect(()=>{heading.current?.focus();},[flow.step]);return <DefaultTemplate><ScrollToTop/><Layout><Story><Eyebrow>VOLTE PARA SUAS DESCOBERTAS</Eyebrow><h2>Vamos ajudar você a entrar novamente.</h2><p>Recupere o acesso à sua conta para acompanhar pedidos, rever favoritos e continuar comprando perto de você.</p><img src={image} alt=""/></Story><Card aria-labelledby="recovery-title"><Eyebrow>RECUPERAÇÃO DE SENHA</Eyebrow><h1 id="recovery-title" ref={heading} tabIndex={-1} style={{outline:'none'}}>{labels[flow.step][0]}</h1><Intro>{labels[flow.step][1]}</Intro>{flow.step==='success'?<><SuccessMark aria-hidden="true"><FiCheck/></SuccessMark><Info role="status">Sua senha foi alterada. Os acessos anteriores foram encerrados; entre novamente para continuar.</Info><Signup style={{marginTop:24}}><Link to="/auth/login">Entrar com minha nova senha</Link></Signup></>:<><Steps aria-label="Etapas da recuperação">{(['email','code','password'] as const).map((step,index)=><li key={step} aria-current={flow.step===step?'step':undefined}><span>{index+1}</span>{['E-mail','Código','Nova senha'][index]}</li>)}</Steps>{flow.message&&<div style={{marginBottom:16}}><Alert role="alert">{flow.message}</Alert></div>}{flow.info&&flow.step!=='code'&&<Info role="status">{flow.info}</Info>}{flow.step==='email'?<EmailStep flow={flow}/>:flow.step==='code'?<CodeStep flow={flow}/>:<NewPasswordStep flow={flow}/>}<Signup style={{marginTop:24}}><Link to="/auth/login"><FiArrowLeft aria-hidden="true" style={{verticalAlign:'middle',marginRight:6}}/>Voltar para entrar</Link></Signup></>}</Card></Layout></DefaultTemplate>;}

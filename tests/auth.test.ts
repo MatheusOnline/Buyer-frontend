@@ -89,3 +89,39 @@ describe('registration validation and payload', () => {
         expect(registerFailure(new Error('private details')).message).not.toContain('private');
     });
 });
+
+describe('social authentication feedback',()=>{
+    it('distinguishes cancellation from unavailability without echoing arbitrary messages',async()=>{
+        const {socialCallbackError,socialFormError}=await import('../src/features/auth/utils/socialErrors');
+        expect(socialCallbackError('cancelled')).toContain('cancelou');
+        expect(socialCallbackError('unavailable')).toContain('e-mail e senha');
+        expect(socialCallbackError('private details')).not.toContain('private details');
+        expect(socialFormError({isAxiosError:true,response:{status:401,data:{code:'OAUTH_LINK_PASSWORD_REQUIRED'}}})).toContain('vincular');
+        expect(socialFormError({isAxiosError:true,response:{status:400,data:{code:'OAUTH_INVALID_FLOW'}}})).toContain('expirou');
+    });
+    it('only preserves internal return destinations in provider URLs',async()=>{
+        const {socialAuthApi}=await import('../src/features/auth/api/socialAuthApi');
+        expect(socialAuthApi.startUrl('google','/cart')).toContain('/oauth/google?redirect=%2Fcart');
+        expect(socialAuthApi.startUrl('apple','https://evil.test')).toMatch(/redirect=%2F$/);
+    });
+});
+
+describe('password recovery validation and privacy',()=>{
+    it('validates email and six-digit codes including leading zeroes',async()=>{
+        const {validateRecoveryEmail,validateRecoveryCode}=await import('../src/features/auth/utils/passwordResetValidation');
+        expect(validateRecoveryEmail(' pessoa@example.com ')).toEqual({});expect(validateRecoveryEmail('invalid').email).toBeTruthy();
+        expect(validateRecoveryCode('012345')).toEqual({});for(const code of ['12345','1234567','12a456',' 123456'])expect(validateRecoveryCode(code).code).toBeTruthy();
+    });
+    it('requires confirmation and respects the bcrypt UTF-8 byte limit',async()=>{
+        const {validateRecoveryPassword}=await import('../src/features/auth/utils/passwordResetValidation');
+        expect(validateRecoveryPassword(' frase longa ',' frase longa ')).toEqual({});
+        expect(validateRecoveryPassword('short','short').password).toBeTruthy();expect(validateRecoveryPassword('password123','different').confirmPassword).toBeTruthy();
+        expect(validateRecoveryPassword('🔑'.repeat(30),'🔑'.repeat(30)).password).toBeTruthy();
+    });
+    it('explains expiration, resend limits and failures without leaking server details',async()=>{
+        const {recoveryFailure}=await import('../src/features/auth/utils/passwordResetValidation');
+        expect(recoveryFailure({isAxiosError:true,response:{status:400,data:{code:'RESET_CODE_INVALID'}}}).message).toContain('expirado');
+        expect(recoveryFailure({isAxiosError:true,response:{status:429}}).message).toContain('Aguarde');
+        expect(recoveryFailure(new Error('private details')).message).not.toContain('private details');
+    });
+});
