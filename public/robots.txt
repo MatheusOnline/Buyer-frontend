@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /auth/
+Disallow: /profile
+Disallow: /cart
+Disallow: /favorites
+Disallow: /payment/
+Disallow: /search
+
+Sitemap: https://compraslocal.com.br/sitemap.xml

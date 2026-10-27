@@ -1,8 +1,11 @@
+import {CookieNotice} from "./features/privacy/components/CookieNotice";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
 import { RequireAuth } from "./features/auth/components/RequireAuth";
 import { Home } from "./Pages/Home/Index";
+const NotFoundPage = lazy(() => import("./features/errors/pages/NotFoundPage"));
+const LegalPage = lazy(() => import("./features/legal/pages/LegalPage"));
 const Product = lazy(() => import("./Pages/Announcement/index"));
 const CartPage = lazy(() => import("./Pages/Cart"));
 const Favorites = lazy(() => import("./Pages/Favorites"));
@@ -28,6 +31,8 @@ export const AppRoutes = () => (
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:slug/:id" element={<Product />} />
+        <Route path="/termos-de-uso" element={<LegalPage kind="terms" />} />
+        <Route path="/politica-de-privacidade" element={<LegalPage kind="privacy" />} />
         <Route path="/search" element={<Search />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/social" element={<SocialAuth />} />
@@ -46,7 +51,9 @@ export const AppRoutes = () => (
             <Route path="address" element={<ProfileAnddress />} />
           </Route>
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
+    <CookieNotice />
   </BrowserRouter>
 );

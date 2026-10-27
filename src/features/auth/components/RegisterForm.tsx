@@ -1,3 +1,4 @@
+import {LegalNotice} from "../../legal/components/LegalNotice";
 import { Link } from "react-router-dom";
 import { FiArrowRight } from "react-icons/fi";
 import { AuthField } from "./AuthField";
@@ -14,6 +15,7 @@ export function RegisterForm({onSuccess,loginUrl}:{onSuccess:()=>void;loginUrl:s
         <AuthField id="register-password" label="Senha" password autoComplete="new-password" placeholder="Crie sua senha" hint="Use pelo menos 8 caracteres." maxLength={255} {...bind("password")} />
         <AuthField id="register-confirmPassword" label="Confirmar senha" password autoComplete="new-password" placeholder="Digite a senha novamente" maxLength={255} {...bind("confirmPassword")} />
         {form.message && <Alert role="alert">{form.message}</Alert>}
+        <LegalNotice/>
         <Submit type="submit" disabled={form.isPending}>{form.isPending ? "Criando sua conta…" : "Criar minha conta"}<FiArrowRight aria-hidden="true" /></Submit>
         <Signup>Já tem uma conta? <Link to={loginUrl}>Entrar na minha conta</Link></Signup>
     </Form>;
