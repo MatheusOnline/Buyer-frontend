@@ -4,7 +4,7 @@ import type { CardProductProps } from "../types/types";
 
 export interface CatalogResponse {
     success: boolean;
-    data: {products: CardProductProps[]; pagination: {page: number; limit: number; totalItems: number; totalPages: number}};
+    data: {search?:{query:string;mode:'direct'|'similar'|'empty'};products: CardProductProps[]; pagination: {page: number; limit: number; totalItems: number; totalPages: number}};
 }
 export type ListProps = {limit?: number; page?: number; search?: string; category?: string; department?: string};
 const fetchList = async (value: ListProps, signal?: AbortSignal) => {

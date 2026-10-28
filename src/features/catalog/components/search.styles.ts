@@ -1,0 +1,3 @@
+import styled from 'styled-components';
+export const SearchNotice=styled.div`margin:0 0 22px;padding:16px 18px;background:#edf8fd;border:1px solid #d5ebf5;border-radius:6px;color:#365c74;font-size:13px;strong{font-weight:600;}p{margin:6px 0 0;font-size:12px;color:#608296;line-height:1.7;}`;
+export const SearchEmpty=styled.div`padding:44px 24px;background:white;border:1px solid #e0eaf0;border-radius:8px;text-align:center;h3{font-size:19px;color:#294b60;overflow-wrap:anywhere;}p{margin:14px auto 24px;max-width:480px;font-size:13px;line-height:1.8;color:#7893a3;}a{display:inline-flex;padding:12px 18px;border-radius:6px;background:#008ecc;color:white;text-decoration:none;font-size:12px;font-weight:600;}`;

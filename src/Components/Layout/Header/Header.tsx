@@ -18,7 +18,7 @@ export const Header = () => {
             <HeaderInner>
                 <Brand to="/" aria-label="Compras Local — início"><img src={Logo} alt="Compras Local" /></Brand>
                 <SearchForm role="search" onSubmit={event => {event.preventDefault(); navigate(search.trim() ? `/search?q=${encodeURIComponent(search.trim())}` : "/search");}}>
-                    <FiSearch aria-hidden="true" /><input aria-label="Buscar produtos" placeholder="O que você está procurando hoje?" value={search} onChange={event => setDraft({query, value: event.target.value})} />
+                    <FiSearch aria-hidden="true" /><input maxLength={120} aria-label="Buscar produtos" placeholder="O que você está procurando hoje?" value={search} onChange={event => setDraft({query, value: event.target.value})} />
                     <button type="submit" aria-label="Buscar"><FiSearch /></button>
                 </SearchForm>
                 <Actions aria-label="Sua conta e compras">
