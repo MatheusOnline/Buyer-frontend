@@ -38,7 +38,7 @@ function CardContent({id}:{id:string}) {
         if(submitting.current||hasPayment||blocked)return;
         submitting.current=true;
         try {const response=await mutation.mutateAsync(body);setResult(response.data);void client.invalidateQueries({queryKey:['checkout',id]});}
-        catch {setUncertain(true);void client.invalidateQueries({queryKey:['checkout',id]});}
+        catch(error) {const status=(error as {response?:{status?:number}})?.response?.status;if(status&&status<500)throw error;setUncertain(true);void client.invalidateQueries({queryKey:['checkout',id]});}
         finally {submitting.current=false;}
     }
     return <DefaultTemplate><ScrollToTop/><Breadcrumb aria-label="Navegação do pagamento"><Link to="/">Início</Link><FiChevronRight/><Link to="/cart">Carrinho</Link><FiChevronRight/><span>Pagamento com cartão</span></Breadcrumb>
@@ -49,9 +49,9 @@ function CardContent({id}:{id:string}) {
                 {status.isError&&<ErrorBox role="alert">Não foi possível consultar o pagamento. Tente atualizar o status em instantes.</ErrorBox>}
                 <Actions>{detail.payment_method==='pix'&&!approved?<Action to={`/payment/pix/${id}`}>Acompanhar Pix</Action>:<><Action to="/profile/orders">Ver minhas compras</Action>{!approved&&<Button disabled={status.isFetching} onClick={()=>status.refetch()}><FiRefreshCw/>{status.isFetching?'Consultando…':'Atualizar status'}</Button>}</>}</Actions>
                 {['rejected','cancelled'].includes(state)&&<Back to="/cart">Voltar ao carrinho</Back>}
-            </Result>:blocked?<Result role="alert"><FiClock/><h2>{expired?'Esta compra expirou':detail.status==='cancelled'?'Compra cancelada':'Revise os dados da compra'}</h2><p>{expired?'Volte ao carrinho para conferir os produtos e iniciar um novo checkout.':'Confira o endereço e os dados do checkout antes de pagar.'}</p><Action to={expired?'/cart':`/payment/checkout/${id}`}>Revisar compra</Action></Result>:<Panel><h2><FiCreditCard/>Dados do cartão</h2><Intro>Pagamento à vista em 1x de <strong>{money(detail.total)}</strong></Intro>
-                {mutation.isPending?<Result role="status" aria-live="polite"><FiClock/><h2>Enviando seu pagamento…</h2><p>Aguarde o retorno. Mantenha esta página aberta.</p></Result>:null}<div style={{display:mutation.isPending?'none':undefined}}><CardForm checkoutId={id} amount={Number(detail.total)} onPay={pay}/></div>
-                <Secure><FiLock/><span>Os dados do cartão são preenchidos no formulário protegido do Mercado Pago.</span></Secure>
+            </Result>:blocked?<Result role="alert"><FiClock/><h2>{expired?'Esta compra expirou':detail.status==='cancelled'?'Compra cancelada':'Revise os dados da compra'}</h2><p>{expired?'Volte ao carrinho para conferir os produtos e iniciar um novo checkout.':'Confira o endereço e os dados do checkout antes de pagar.'}</p><Action to={expired?'/cart':`/payment/checkout/${id}`}>Revisar compra</Action></Result>:<Panel><h2><FiCreditCard/>Pagamento com cartão</h2><Intro>Pagamento à vista em 1x de <strong>{money(detail.total)}</strong></Intro>
+                {mutation.isPending?<Result role="status" aria-live="polite"><FiClock/><h2>Processando pagamento…</h2><p>Aguarde a resposta do Asaas; isso pode levar alguns segundos.</p></Result>:null}<div style={{display:mutation.isPending?'none':undefined}}><CardForm checkoutId={id} pending={mutation.isPending} onPay={pay}/></div>
+                <Secure><FiLock/><span>Pagamento processado pelo Asaas com conexão segura. Os dados do cartão não são armazenados no ComprasLocal.</span></Secure>
             </Panel>}
             <CheckoutProducts products={detail.products}/>
         </Stack><Stack><Panel><h2>Resumo da compra</h2><Totals><div><span>Produtos</span><span>{money(detail.subtotal)}</span></div>{Number(detail.discount)>0&&<div><span>Desconto</span><span>− {money(detail.discount)}</span></div>}<div className="total"><strong>Total a pagar</strong><strong>{money(detail.total)}</strong></div></Totals><StatusText><FiCreditCard/> Cartão · pagamento à vista</StatusText><Reference><span>Referência da compra</span><strong>#{id.slice(-8).toUpperCase()}</strong></Reference></Panel>

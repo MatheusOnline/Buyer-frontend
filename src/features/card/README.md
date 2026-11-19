@@ -1,15 +1,13 @@
 # Pagamento com cartão
 
-A página usa o checkout autenticado como fonte do valor e mantém os dados sensíveis nos campos do Mercado Pago. O envio contém apenas o token do cartão, o método identificado pelo SDK e o identificador do checkout. Nenhum dado do formulário é registrado no console.
+O cartão é processado de forma transparente pelo Asaas. O navegador envia os dados do cartão ao backend por HTTPS; o backend cria/localiza o cliente, processa uma cobrança à vista via API e armazena apenas a referência do pagamento. Os dados do cartão não são persistidos nem registrados nos logs da aplicação.
 
 - `api`: envio e consulta autenticados.
-- `hooks`: solicitação sem repetição automática e acompanhamento do status.
-- `components`: formulário protegido, com referências estáveis para evitar reinicialização durante a digitação.
+- `components`: campos do cartão e validações básicas de entrada.
+- `hooks`: envio sem repetição automática e acompanhamento do status.
 - `utils`: estados e mensagens do pagamento.
 - `pages`: fluxo, endereço, produtos e resumo.
 
-Pagamento à vista em 1x. A chave pública pode ser definida por `VITE_MERCADOPAGO_PUBLIC_KEY`; o fallback é a chave pública de testes já existente no projeto. Ela deve corresponder ao ambiente da credencial privada do backend. Nunca colocar access token em variável VITE.
+O status definitivo é conciliado pela API/webhook Asaas; apenas pagamentos confirmados marcam a compra como paga. Em caso de timeout ou resposta inconclusiva, consulte o status antes de tentar novamente.
 
-O backend bloqueia o checkout durante o envio e usa uma chave de idempotência por checkout. Apenas `approved` marca a compra como paga. Uma recusa exige um novo checkout pelo carrinho; a mesma compra não cria outra cobrança. Em falha de comunicação, consultar o pagamento antes de iniciar outra compra.
-
-Validação sem cobrança: `npm run test:card` no frontend; `node --test tests/card-payment.test.cjs tests/pix-read.test.cjs` no backend. Os testes de backend substituem o SDK por um provedor em memória.
+Configure `ASAAS_API_KEY`, `ASAAS_API_BASE_URL` e `ASAAS_WEBHOOK_TOKEN` somente no backend. Use a URL Sandbox até validar a integração. Para processar cartão, publique o checkout em HTTPS e configure o proxy confiável para que o backend receba o IP real do comprador.

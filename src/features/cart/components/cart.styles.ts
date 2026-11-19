@@ -19,3 +19,5 @@ export const Primary = styled.button`display:flex;align-items:center;justify-con
 export const State = styled.section`display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:56px 24px;background:white;border:1px solid #e5ecf0;border-radius:8px;gap:18px;>svg{color:#4b9bbb;background:#edf8fc;padding:14px;border-radius:8px;font-size:28px;box-sizing:content-box;}h2{color:#315368;font-size:22px;margin:0;}p{color:#7a929f;font-size:13px;line-height:1.8;max-width:420px;margin:0;}a{padding:12px 18px;border-radius:6px;background:#008ecc;color:white;text-decoration:none;font-size:12px;}button{max-width:220px;}`;
 export const Error = styled.p`color:#ad4456!important;background:#fff5f6;border:1px solid #f1d6dc;border-radius:4px;padding:9px;font-size:12px;line-height:1.6;`;
 export const Badge = styled.span`font-size:10px;color:#188665;background:#effaf5;border-radius:4px;padding:4px 6px;`;
+
+export const StoreClosed = styled.p`&&{margin:6px 0 0;color:#9a5a16;font-size:12px;font-weight:600;line-height:1.45;}`;
