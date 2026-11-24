@@ -39,7 +39,7 @@ const TopLine = styled.div`
 const ContainerHeader = styled.header`
     background: white; border-bottom: 1px solid #e8edf1;
     a { text-decoration: none; color: #304b59; }
-    a:focus-visible, button:focus-visible { outline: 2px solid #008ecc; outline-offset: 4px; border-radius: 6px; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--action-primary); outline-offset: 4px; border-radius: 6px; }
 `;
 const HeaderInner = styled.div`
     max-width: 1344px; margin: auto; padding: 22px 32px; display: grid; grid-template-columns: 165px minmax(160px, 1fr) auto; gap: 36px; align-items: center;
@@ -51,10 +51,10 @@ const Brand = styled(Link)`
 `;
 const SearchForm = styled.form`
     display: flex; align-items: center; gap: 12px; padding: 5px 5px 5px 16px; border: 1px solid #e1e8ed; background: #f7f9fb; border-radius: 6px; color: #778d99; min-width: 0;
-    &:focus-within { border-color: #008ecc; box-shadow: 0 0 0 3px #e4f5fc; }
+    &:focus-within { border-color: var(--action-primary); box-shadow: 0 0 0 3px #e4f5fc; }
     > svg { flex-shrink: 0; width: 18px; height: 18px; }
     input { width: 100%; min-width: 0; height: 36px; border: 0; outline: 0; background: transparent; color: #223c4a; font-size: 13px; }
-    button { display: grid; place-items: center; width: 38px; height: 38px; border: 0; background: #008ecc; color: white; border-radius: 6px; cursor: pointer; flex-shrink: 0; }
+    button { display: grid; place-items: center; width: 38px; height: 38px; border: 0; background: var(--action-primary); color: white; border-radius: 6px; cursor: pointer; flex-shrink: 0; }
     @media (max-width: 700px) { grid-column: 1 / -1; grid-row: 2; }
 `;
 const Actions = styled.nav`
@@ -67,7 +67,7 @@ const Actions = styled.nav`
 const IconLink = styled(Link)`padding: 5px;`;
 const Nav = styled.nav`
     max-width: 1344px; margin: auto; padding: 0 32px 15px; display: flex; align-items: center; gap: 28px; font-size: 12px; overflow-x: auto; scrollbar-width: none; &::-webkit-scrollbar { display: none; }
-    a { flex-shrink: 0; } a:hover { color: #008ecc; } a:first-child { font-weight: 600; }
+    a { flex-shrink: 0; } a:hover { color: var(--action-primary); } a:first-child { font-weight: 600; }
     span { margin-left: auto; color: #8b9ba6; font-size: 11px; white-space: nowrap; }
     @media (max-width: 900px) { span { display: none; } }
     @media (max-width: 700px) { padding: 0 16px 14px; gap: 22px; font-size: 11px; }

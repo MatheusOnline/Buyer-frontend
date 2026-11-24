@@ -59,14 +59,14 @@ const ButtonStyled = styled.button<props>`
         transition: background-color 0.3s ease;
 
         &.__button-contained-primary {
-            background: ${({ theme }) => theme.colors.brand_color_400};
+            background: ${({ theme }) => theme.colors.brand_color_600};
         
             &:hover{
-                background: ${({ theme }) => theme.colors.brand_color_500};
+                background: ${({ theme }) => theme.colors.brand_color_700};
             
             }
             &:active{
-                background: ${({ theme }) => theme.colors.brand_color_600};
+                background: ${({ theme }) => theme.colors.brand_color_700};
             }
         }
 
@@ -110,8 +110,8 @@ const ButtonStyled = styled.button<props>`
         
 
         &.__button-outlined-primary {
-            border-color: ${({ theme }) => theme.colors.brand_color_400};
-            color: ${({ theme }) => theme.colors.brand_color_400};
+            border-color: ${({ theme }) => theme.colors.brand_color_600};
+            color: ${({ theme }) => theme.colors.brand_color_600};
             
             &:hover{
                 background-color: ${({ theme }) => theme.colors.brand_color_200};
@@ -157,14 +157,14 @@ const ButtonStyled = styled.button<props>`
 
          &.__button-text-primary {
             
-            color: ${({ theme }) => theme.colors.brand_color_400};
+            color: ${({ theme }) => theme.colors.brand_color_600};
             
             &:hover{
-                color: ${({ theme }) => theme.colors.brand_color_200};
+                color: ${({ theme }) => theme.colors.brand_color_700};
                
             }
             &:active{
-                color: ${({ theme }) => theme.colors.brand_color_300};
+                color: ${({ theme }) => theme.colors.brand_color_700};
             }
         }
 

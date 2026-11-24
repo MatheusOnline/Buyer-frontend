@@ -123,7 +123,7 @@ const Card = styled.article`
     transition: box-shadow .2s, transform .2s;
 
     &:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(35, 47, 58, .13); }
-    a:focus-visible, button:focus-visible { outline: 2px solid #008ecc; outline-offset: 3px; border-radius: 4px; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--action-primary); outline-offset: 3px; border-radius: 4px; }
     @media(max-width: 550px) { padding: 10px; border-radius: 6px; }
 `;
 const CardHeader = styled.div`
@@ -226,12 +226,12 @@ const CartButton = styled.button`
     height: 38px;
     border: 0;
     border-radius: 4px;
-    background: #36c5fa;
+    background: var(--action-primary);
     color: #fff;
     cursor: pointer;
     transition: background .2s;
     svg { width: 22px; height: 22px; stroke-width: 2; }
-    &:hover { background: #0caeeb; }
+    &:hover { background: var(--action-primary-hover); }
     &:disabled { background: #c6d5df; cursor: not-allowed; }
     @media(max-width: 550px) { width: 32px; height: 34px; svg { width: 20px; height: 20px; } }
 `;

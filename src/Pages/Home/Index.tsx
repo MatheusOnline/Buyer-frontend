@@ -1,17 +1,14 @@
 import { Link } from "react-router-dom";
-import { FiArrowRight, FiCompass, FiHeart, FiMapPin, FiPackage, FiShoppingBag, FiTag } from "react-icons/fi";
+import { FiArrowRight, FiCompass, FiHeart, FiHome, FiMapPin, FiPackage, FiShoppingBag, FiTag } from "react-icons/fi";
 import { DefaultTemplate } from "../../Template/DefaultTemplate";
 import { CatalogProducts } from "@components/Layout/CatalogProducts";
 import { CategoryBar } from "../../Components/Layout/CategoryBar/CategoryBar";
 import { useHomeProducts } from "../../service/productsService";
-import { Hero, HeroCopy, HeroDisplay, HeroPlaceholder, PrimaryAction, DiscoveryTag, Benefits, CatalogHeader, LoadMore, ErrorState, LocalBanner, TextLink } from "./styled";
-
-const currency = new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"});
+import { Hero, HeroCopy, HeroDisplay, CityGrid, MapArtwork, StoreMarker, LocalDiscoveryCard, LocalDiscoveryIcon, LocalDiscoveryCopy, LocalBadge, PrimaryAction, DiscoveryTag, Benefits, CatalogHeader, LoadMore, ErrorState, LocalBanner, TextLink } from "./styled";
 export const Home = () => {
     const {data, isPending, isError, refetch, hasNextPage, fetchNextPage, isFetchingNextPage, isFetchNextPageError} = useHomeProducts();
     const products = Array.from(new Map((data?.pages.flatMap(page => page.data.products) ?? []).map(product => [product.id, product])).values());
     const total = data?.pages[0]?.data.pagination.totalItems ?? 0;
-    const featured = products.filter(product => product.image).slice(0, 2);
     return <DefaultTemplate>
         <Hero aria-labelledby="home-title">
             <HeroCopy><small><FiMapPin /> PRODUTOS DA SUA CIDADE, EM UM SÓ LUGAR.</small>
@@ -19,10 +16,22 @@ export const Home = () => {
                 <p>Encontre produtos nas lojas da sua cidade, compare preços e compre sem sair de casa.</p>
                 <div><PrimaryAction href="#home-products">Explorar produtos <FiArrowRight /></PrimaryAction><span><FiHeart /> Escolha comprar local</span></div>
             </HeroCopy>
-            <HeroDisplay>
-                {featured.length ? featured.map(product => <Link key={product.id} to={`/product/${encodeURIComponent(product.title.toLowerCase().replace(/\s+/g, "-"))}/${product.id}`} aria-label={`Conheça ${product.title}`}>
-                    <div><img src={product.image} alt={product.title} /></div><strong>{product.title}</strong><span>{currency.format(product.current_price ?? product.original_price)}</span>
-                </Link>) : <HeroPlaceholder><FiShoppingBag /><span>Produtos das lojas da sua cidade.</span></HeroPlaceholder>}
+            <HeroDisplay aria-label="Ilustração do comércio local">
+                <CityGrid aria-hidden="true" />
+                <MapArtwork aria-hidden="true" viewBox="0 0 560 320" preserveAspectRatio="xMidYMid meet">
+                    <path className="street street-main" d="M-12 218 C92 216 115 145 212 151 S326 242 424 202 510 124 572 124" />
+                    <path className="street street-secondary" d="M92 -12 C101 72 159 96 155 162 S111 249 130 333" />
+                    <path className="street street-secondary" d="M340 -12 C331 62 382 92 369 148 S316 240 340 333" />
+                    <path className="route" d="M49 220 C112 210 128 152 208 157 S322 237 404 202 473 139 520 130" />
+                </MapArtwork>
+                <StoreMarker className="marker-one"><FiHome /></StoreMarker>
+                <StoreMarker className="marker-two"><FiShoppingBag /></StoreMarker>
+                <StoreMarker className="marker-three"><FiHome /></StoreMarker>
+                <LocalDiscoveryCard>
+                    <LocalDiscoveryIcon><FiMapPin /></LocalDiscoveryIcon>
+                    <LocalDiscoveryCopy><span>COMPRAS LOCAL</span><strong>Comércio perto de você</strong><small>Lojas da sua cidade em um só lugar</small></LocalDiscoveryCopy>
+                </LocalDiscoveryCard>
+                <LocalBadge><FiShoppingBag /> Descubra. Compare. Compre local.</LocalBadge>
                 <DiscoveryTag><FiCompass /> Sua próxima compra começa aqui</DiscoveryTag>
             </HeroDisplay>
         </Hero>

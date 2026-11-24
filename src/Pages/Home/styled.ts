@@ -11,26 +11,69 @@ export const HeroCopy = styled.div`
     position: relative; z-index: 1; min-width: 0; max-width: 460px;
     > small { display: inline-flex; align-items: center; gap: 8px; font-size: 9px; letter-spacing: 1.5px; font-weight: 600; color: #3888a9; margin-bottom: 20px; }
     h1 { font-size: clamp(32px, 3.8vw, 52px); line-height: 1.12; letter-spacing: -2px; color: #103f57; font-weight: 700; }
-    h1 em { color: #008ecc; font-style: normal; }
+    h1 em { color: var(--action-primary); font-style: normal; }
     > p { font-size: 13px; line-height: 1.8; color: #638292; max-width: 350px; margin: 20px 0 26px; }
     > div { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; }
     > div > span { display: flex; gap: 6px; align-items: center; font-size: 10px; color: #638292; }
     @media(max-width: 700px) { h1 { font-size: 38px; letter-spacing: -1.5px; } > small { margin-bottom: 16px; } }
 `;
-export const PrimaryAction = styled.a`display: inline-flex; align-items: center; gap: 14px; padding: 14px 19px; border-radius: 6px; background: #008ecc; color: white; text-decoration: none; font-size: 12px; font-weight: 600; transition: background .2s; &:hover { background: #0076ad; } &:focus-visible { outline: 3px solid #083e56; outline-offset: 3px; }`;
+export const PrimaryAction = styled.a`display: inline-flex; align-items: center; gap: 14px; padding: 14px 19px; border-radius: 6px; background: var(--action-primary); color: white; text-decoration: none; font-size: 12px; font-weight: 600; transition: background .2s; &:hover { background: var(--action-primary-hover); } &:focus-visible { outline: 3px solid #083e56; outline-offset: 3px; }`;
 export const HeroDisplay = styled.div`
-    position: relative; z-index: 1; min-width: 0; height: 300px; display: flex; align-items: center; justify-content: center; gap: 18px;
-    > a { position: relative; text-decoration: none; width: 190px; padding: 16px; border: 1px solid #fff; border-radius: 8px; background: #ffffffd9; box-shadow: 0 16px 30px #1f709211; transform: rotate(-7deg) translateY(-14px); }
-    > a:nth-child(2) { transform: rotate(7deg) translateY(26px); }
-    > a > div { height: 155px; display: grid; place-items: center; }
-    img { width: 100%; height: 100%; max-height: 155px; object-fit: contain; mix-blend-mode: multiply; }
-    strong { display: block; color: #214a60; font-size: 11px; line-height: 1.5; margin-top: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    > a > span { font-size: 11px; color: #1688b7; display: block; margin-top: 4px; font-weight: 600; }
-    @media(max-width: 1000px) { > a { width: 160px; padding: 12px; } > a > div { height: 125px; } }
-    @media(max-width: 700px) { height: 240px; gap: 10px; > a { width: 132px; min-width: 0; transform: rotate(-5deg) translateY(-5px); } > a:nth-child(2) { transform: rotate(5deg) translateY(10px); } > a > div { height: 115px; } }
+    position: relative; z-index: 1; min-width: 0; height: 300px; display: grid; place-items: center;
+    @media(max-width: 700px) { height: 230px; }
 `;
-export const HeroPlaceholder = styled.div`display: grid; justify-items: center; gap: 20px; color: #1e8cbb; > svg { width: 100px; height: 100px; stroke-width: .9px; } span { font-size: 13px; color: #5e8ca3; }`;
-export const DiscoveryTag = styled.div`position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); padding: 9px 14px; background: #fff; border-radius: 8px; box-shadow: 0 6px 22px #2958700c; display: flex; align-items: center; gap: 7px; color: #4e778b; font-size: 10px; white-space: nowrap; svg { color: #ff922b; }`;
+export const CityGrid = styled.div`
+    position:absolute;inset:4px 0;border:1px solid #ffffff80;border-radius:50%;
+    background:
+        linear-gradient(28deg,transparent 47%,#ffffff60 47.3%,#ffffff60 48.2%,transparent 48.5%),
+        linear-gradient(148deg,transparent 36%,#ffffff70 36.3%,#ffffff70 37.2%,transparent 37.5%),
+        repeating-linear-gradient(0deg,transparent 0 35px,#ffffff55 36px 38px,transparent 39px 70px),
+        repeating-linear-gradient(90deg,transparent 0 48px,#ffffff55 49px 51px,transparent 52px 96px);
+    opacity:.78;transform:rotate(-9deg) scale(1.06);
+    @media(max-width:700px){inset:10px 0;}
+`;
+export const MapArtwork = styled.svg`
+    position:absolute;width:100%;height:100%;overflow:visible;
+    .street{fill:none;stroke:#d1e9f2;stroke-linecap:round;}
+    .street-main{stroke-width:25px;}
+    .street-secondary{stroke-width:18px;}
+    .route{fill:none;stroke:#63c5e4;stroke-width:3px;stroke-linecap:round;stroke-dasharray:2 9;}
+`;
+export const StoreMarker = styled.span`
+    position:absolute;width:40px;height:40px;display:grid;place-items:center;border:4px solid #fff;border-radius:50%;
+    background:#078fc4;color:#fff;box-shadow:0 8px 20px #13566a24;
+    svg{width:17px;height:17px;stroke-width:2.2;}
+    &.marker-one{left:14%;top:60%;background:#ff963e;}
+    &.marker-two{left:37%;top:26%;width:48px;height:48px;background:#078fc4;}
+    &.marker-three{right:12%;top:36%;background:#30a58d;}
+    @media(max-width:700px){width:34px;height:34px;&.marker-two{width:42px;height:42px;}}
+`;
+export const LocalDiscoveryCard = styled.div`
+    position:relative;z-index:1;display:flex;align-items:center;gap:14px;width:min(310px,78%);padding:18px;
+    border:1px solid #ffffffd9;border-radius:8px;background:#ffffffeb;box-shadow:0 18px 45px #1f70921a;
+    transform:translateY(4px);animation:float-card 5s ease-in-out infinite;
+    @keyframes float-card{0%,100%{transform:translateY(4px)}50%{transform:translateY(-4px)}}
+    @media(max-width:700px){width:min(280px,82%);padding:14px;gap:10px;}
+`;
+export const LocalDiscoveryIcon = styled.span`
+    flex:0 0 48px;width:48px;height:48px;display:grid;place-items:center;border-radius:8px;background:#e6f6fc;color:#078fc4;
+    svg{width:24px;height:24px;stroke-width:1.8;}
+    @media(max-width:700px){flex-basis:40px;width:40px;height:40px;svg{width:21px;height:21px;}}
+`;
+export const LocalDiscoveryCopy = styled.div`
+    min-width:0;display:grid;gap:5px;
+    span{font-size:8px;letter-spacing:1.4px;color:#50869b;font-weight:700;}
+    strong{font-size:15px;line-height:1.2;color:#17465c;}
+    small{font-size:10px;color:#7993a0;}
+    @media(max-width:700px){strong{font-size:13px;}small{font-size:9px;}}
+`;
+export const LocalBadge = styled.div`
+    position:absolute;left:5%;bottom:10%;z-index:2;display:flex;align-items:center;gap:8px;padding:9px 12px;
+    background:#fff;border-radius:6px;box-shadow:0 7px 20px #29587012;color:#4e778b;font-size:9px;white-space:nowrap;
+    svg{color:#ff922b;}
+    @media(max-width:700px){left:0;bottom:4%;font-size:8px;padding:8px 10px;}
+`;
+export const DiscoveryTag = styled.div`position: absolute; right: 2%; top: 9%; padding: 9px 14px; background: #fff; border-radius: 6px; box-shadow: 0 6px 22px #2958700c; display: flex; align-items: center; gap: 7px; color: #4e778b; font-size: 10px; white-space: nowrap; svg { color: #ff922b; } @media(max-width:700px){right:0;top:3%;font-size:8px;padding:8px 10px;}`;
 export const Benefits = styled.div`
     display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding: 23px 28px; background: white; border: 1px solid #e6edf1; border-radius: 6px; margin-top: -16px;
     > div { display: flex; align-items: center; justify-content: center; gap: 14px; }
@@ -45,11 +88,11 @@ export const CatalogHeader = styled.div`
     small { font-size: 9px; letter-spacing: 1.4px; color: #8b9ba6; font-weight: 600; }
     h2 { margin: 8px 0; font-size: 25px; letter-spacing: -.7px; color: #163f55; font-weight: 650; }
     p { font-size: 12px; color: #8b9ba6; }
-    > a { font-size: 12px; color: #008ecc; text-decoration: none; display: flex; align-items: center; gap: 8px; white-space: nowrap; padding-bottom: 3px; }
+    > a { font-size: 12px; color: var(--action-primary); text-decoration: none; display: flex; align-items: center; gap: 8px; white-space: nowrap; padding-bottom: 3px; }
     @media(max-width: 550px) { h2 { font-size: 21px; } > a { font-size: 10px; } }
 `;
 export const LoadMore = styled.div`display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 28px; button { border: 1px solid #b9dce9; border-radius: 6px; padding: 12px 26px; background: white; color: #1681ad; font-weight: 600; font-size: 12px; cursor: pointer; } button:disabled { opacity: .6; cursor: wait; } span { color: #8b9ba6; font-size: 11px; }`;
-export const ErrorState = styled.div`padding: 38px 22px; border: 1px solid #e4eaf0; border-radius: 8px; background: white; text-align: center; h3 { font-size: 17px; color: #2c5266; margin-bottom: 10px; } p { font-size: 12px; color: #899da9; margin-bottom: 20px; line-height: 1.6; } button { padding: 11px 18px; border-radius: 6px; border: 0; background: #008ecc; color: #fff; cursor: pointer; }`;
+export const ErrorState = styled.div`padding: 38px 22px; border: 1px solid #e4eaf0; border-radius: 8px; background: white; text-align: center; h3 { font-size: 17px; color: #2c5266; margin-bottom: 10px; } p { font-size: 12px; color: #899da9; margin-bottom: 20px; line-height: 1.6; } button { padding: 11px 18px; border-radius: 6px; border: 0; background: var(--action-primary); color: #fff; cursor: pointer; }`;
 export const LocalBanner = styled.section`
     display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 34px 40px; border-radius: 8px; background: #0a405a; position: relative; overflow: hidden;
     small { color: #74c8e5; font-size: 9px; letter-spacing: 1.5px; font-weight: 600; }
