@@ -1,6 +1,6 @@
 import {useEffect,useRef,useState} from 'react';
 import type {Dispatch,SetStateAction} from 'react';
-import {lookupPostalCode} from '../api/postalCodeApi';
+import {lookupPostalCode} from '../api/postalCodeApi.ts';
 type AddressFields={postal_code:string;street:string;district:string;city:string};
 export function usePostalCode<T extends AddressFields>(values:T,setValues:Dispatch<SetStateAction<T>>){
  const initial=useRef(values.postal_code.replace(/\D/g,''));

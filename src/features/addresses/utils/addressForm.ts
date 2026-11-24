@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {addressPayload,validateAddress,formatCep} from '../../checkout/utils/checkoutValidation';
-import type {AddressValues,SavedAddress} from '../types';
+import {addressPayload,validateAddress,formatCep} from '../../checkout/utils/checkoutValidation.ts';
+import type {AddressValues,SavedAddress} from '../types.ts';
 export {formatCep,validateAddress};
 export function addressValues(address?:SavedAddress,first=false):AddressValues {return {label:address?.label??'',is_default:address?.is_default??first,city:address?.city??'',street:address?.street??'',number:address?.number??'',district:address?.district??'',postal_code:formatCep(address?.postal_code??''),reference:address?.reference??'',complement:address?.complement??''};}
 export function savedAddressPayload(values:AddressValues) {return {...addressPayload(values),reference:values.reference.trim(),complement:values.complement.trim(),is_default:values.is_default};}

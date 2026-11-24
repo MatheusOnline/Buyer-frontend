@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { checkoutApi } from "../api/checkoutApi";
-import { useAuth } from "../../auth/model/authStore";
+import { checkoutApi } from "../api/checkoutApi.ts";
+import { useAuth } from "../../auth/model/authStore.ts";
 export function useGetCheckout(id:string) {
     const user = useAuth(state=>state.user);
     return useQuery({queryKey:["checkout",id],queryFn:({signal})=>checkoutApi.get(id,signal),enabled:!!id&&!!user,refetchInterval:30000,retry:(count,error)=>!(axios.isAxiosError(error)&&[400,401,403,404].includes(error.response?.status??0))&&count<1});

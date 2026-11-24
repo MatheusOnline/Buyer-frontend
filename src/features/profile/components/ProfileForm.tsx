@@ -1,10 +1,10 @@
 import {useState} from 'react';
 import type {FormEvent} from 'react';
 import {FiCheck,FiSave,FiUser} from 'react-icons/fi';
-import type {Profile,ProfileDraft,ProfileErrors} from '../types';
-import {useUpdateProfile} from '../hooks/useProfile';
-import {profileChanged,profileDraft,profileFailure,profilePayload,profileValidation} from '../utils/profileForm';
-import {Actions,Button,Feedback,Field,Fields,Input,Panel} from './profile.styles';
+import type {Profile,ProfileDraft,ProfileErrors} from '../types.ts';
+import {useUpdateProfile} from '../hooks/useProfile.ts';
+import {profileChanged,profileDraft,profileFailure,profilePayload,profileValidation} from '../utils/profileForm.ts';
+import {Actions,Button,Feedback,Field,Fields,Input,Panel} from './profile.styles.ts';
 export function ProfileForm({profile}:{profile:Profile}) {
     const [draft,setDraft]=useState(()=>profileDraft(profile));
     const [errors,setErrors]=useState<ProfileErrors>({});

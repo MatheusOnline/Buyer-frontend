@@ -3,7 +3,7 @@ import {useQuery} from '@tanstack/react-query';
 import styled from 'styled-components';
 import {FcGoogle} from 'react-icons/fc';
 import {FaApple} from 'react-icons/fa';
-import {socialAuthApi,type SocialProvider} from '../api/socialAuthApi';
+import {socialAuthApi,type SocialProvider} from '../api/socialAuthApi.ts';
 const Group=styled.div`display:flex;flex-direction:column;gap:12px;margin-top:22px;`;
 const SocialButton=styled.button<{$apple?:boolean}>`position:relative;display:flex;align-items:center;justify-content:center;gap:12px;min-height:48px;width:100%;border:1px solid ${p=>p.$apple?'#171717':'#dce5eb'};border-radius:6px;background:${p=>p.$apple?'#171717':'white'};color:${p=>p.$apple?'white':'#344858'};font-size:14px;font-weight:500;cursor:pointer;svg{font-size:21px;position:absolute;left:16px;}&:hover:not(:disabled){filter:brightness(.96);}&:focus-visible{outline:3px solid #008ecc;outline-offset:3px;}&:disabled{opacity:.5;cursor:not-allowed;}`;
 const Divider=styled.div`display:flex;align-items:center;gap:14px;color:#8999a3;font-size:11px;margin:6px 0 0;&::before,&::after{content:'';flex:1;height:1px;background:#e4ebf0;}`;

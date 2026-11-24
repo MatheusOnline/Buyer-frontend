@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiArrowRight, FiEye, FiEyeOff } from "react-icons/fi";
-import { useLoginForm } from "../hooks/useLoginForm";
-import { Form, Field, Label, Input, PasswordField, Toggle, FieldError, Alert, Submit, FormLinks, Signup } from "./auth.styles";
+import { useLoginForm } from "../hooks/useLoginForm.ts";
+import { Form, Field, Label, Input, PasswordField, Toggle, FieldError, Alert, Submit, FormLinks, Signup } from "./auth.styles.ts";
 
 export function LoginForm({onSuccess,registerUrl = "/auth/register"}: {onSuccess:()=>void;registerUrl?:string}) {
     const form = useLoginForm(onSuccess);

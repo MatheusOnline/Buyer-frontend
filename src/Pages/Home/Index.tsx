@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { FiArrowRight, FiCompass, FiHeart, FiHome, FiMapPin, FiPackage, FiShoppingBag, FiTag } from "react-icons/fi";
-import { DefaultTemplate } from "../../Template/DefaultTemplate";
-import { CatalogProducts } from "@components/Layout/CatalogProducts";
-import { CategoryBar } from "../../Components/Layout/CategoryBar/CategoryBar";
-import { useHomeProducts } from "../../service/productsService";
-import { Hero, HeroCopy, HeroDisplay, CityGrid, MapArtwork, StoreMarker, LocalDiscoveryCard, LocalDiscoveryIcon, LocalDiscoveryCopy, LocalBadge, PrimaryAction, DiscoveryTag, Benefits, CatalogHeader, LoadMore, ErrorState, LocalBanner, TextLink } from "./styled";
+import { DefaultTemplate } from "../../Template/DefaultTemplate.tsx";
+import { CatalogProducts } from "../../features/catalog/components/CatalogProducts/index.tsx";
+import { CategoryBar } from "../../features/catalog/components/CategoryBar/CategoryBar.tsx";
+import { useHomeProducts } from "../../service/productsService.ts";
+import { Hero, HeroCopy, HeroDisplay, CityGrid, MapArtwork, StoreMarker, LocalDiscoveryCard, LocalDiscoveryIcon, LocalDiscoveryCopy, LocalBadge, PrimaryAction, DiscoveryTag, Benefits, CatalogHeader, LoadMore, ErrorState, LocalBanner, TextLink } from "./styled.ts";
 export const Home = () => {
     const {data, isPending, isError, refetch, hasNextPage, fetchNextPage, isFetchingNextPage, isFetchNextPageError} = useHomeProducts();
     const products = Array.from(new Map((data?.pages.flatMap(page => page.data.products) ?? []).map(product => [product.id, product])).values());

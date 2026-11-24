@@ -2,12 +2,12 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import { FiArrowLeft, FiChevronRight } from "react-icons/fi";
-import { DefaultTemplate } from "../../Template/DefaultTemplate";
-import { ScrollToTop } from "@components/UI/ScrollToTop";
-import { ProductInfo } from "@components/Layout/ProductInformation";
-import { ImagePreview } from "../../Components/Features/ImagePreview";
-import { useGet } from "../../service/productsService";
-import type { ProductInformationProps } from "../../types/types";
+import { DefaultTemplate } from "../../Template/DefaultTemplate.tsx";
+import { ScrollToTop } from "../../shared/components/ui/ScrollToTop/index.tsx";
+import { ProductInfo } from "../../features/catalog/components/ProductInformation/index.tsx";
+import { ImagePreview } from "../../features/catalog/components/ImagePreview/index.tsx";
+import { useGet } from "../../service/productsService.ts";
+import type { ProductInformationProps } from "../../types/types.ts";
 
 const ProductPage = () => {
     const {id} = useParams();

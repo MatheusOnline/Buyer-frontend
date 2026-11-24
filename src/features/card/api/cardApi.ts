@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { api } from '../../../service/api';
-import { useAuth } from '../../auth/model/authStore';
+import { api } from '../../../service/api.ts';
+import { useAuth } from '../../auth/model/authStore.ts';
 export type CardResult = {payment_id:string|number;status:string;status_detail?:string;order_pending?:boolean};
 type Response = {success:boolean;data:CardResult};
 export type CardRequest = {checkout_id:string;creditCard:{number:string;holderName:string;expiryMonth:string;expiryYear:string;ccv:string}};

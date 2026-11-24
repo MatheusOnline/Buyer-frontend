@@ -1,8 +1,8 @@
 import {useEffect,useRef,useState} from 'react';
 import {useQueryClient} from '@tanstack/react-query';
-import {passwordResetApi,type ResetChallenge,type ResetTicket} from '../api/passwordResetApi';
-import {recoveryFailure,validateRecoveryCode,validateRecoveryEmail,validateRecoveryPassword,type ResetErrors} from '../utils/passwordResetValidation';
-import {useAuth} from '../model/authStore';
+import {passwordResetApi,type ResetChallenge,type ResetTicket} from '../api/passwordResetApi.ts';
+import {recoveryFailure,validateRecoveryCode,validateRecoveryEmail,validateRecoveryPassword,type ResetErrors} from '../utils/passwordResetValidation.ts';
+import {useAuth} from '../model/authStore.ts';
 export type RecoveryStep='email'|'code'|'password'|'success';
 export function usePasswordReset(){
  const [step,setStep]=useState<RecoveryStep>('email'),[email,setEmail]=useState(''),[code,setCode]=useState(''),[password,setPassword]=useState(''),[confirmation,setConfirmation]=useState('');

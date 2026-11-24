@@ -1,11 +1,11 @@
 import {useEffect,useRef,useState} from 'react';
 import type {FormEvent} from 'react';
 import {FiCheck,FiX} from 'react-icons/fi';
-import type {AddressValues,SavedAddress} from '../types';
-import {addressValues,formatCep,validateAddress} from '../utils/addressForm';
-import {Actions,Button,Feedback,Field,Fields,Input} from '../../profile/components/profile.styles';
-import {usePostalCode} from '../hooks/usePostalCode';
-import {Check,Dialog} from './addresses.styles';
+import type {AddressValues,SavedAddress} from '../types.ts';
+import {addressValues,formatCep,validateAddress} from '../utils/addressForm.ts';
+import {Actions,Button,Feedback,Field,Fields,Input} from '../../profile/components/profile.styles.ts';
+import {usePostalCode} from '../hooks/usePostalCode.ts';
+import {Check,Dialog} from './addresses.styles.ts';
 export function AddressEditor({address,first,onSave,onClose,busy,error}:{address?:SavedAddress;first:boolean;onSave:(values:AddressValues)=>Promise<void>;onClose:()=>void;busy:boolean;error:string}) {
     const dialog=useRef<HTMLDialogElement>(null);
     const [values,setValues]=useState(()=>addressValues(address,first));

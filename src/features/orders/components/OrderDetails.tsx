@@ -1,14 +1,14 @@
 import {useEffect,useRef} from 'react';
 import {FiX} from 'react-icons/fi';
-import {useOrderDetail} from '../hooks/useOrders';
-import {deliveryStatus,orderDate,purchaseStatus,paymentLink} from '../utils/orders';
-import {money} from '../../cart/utils/cartTotals';
-import {Button,Feedback} from '../../profile/components/profile.styles';
-import {Skeleton} from '../../../Components/UI/Skeleton/Skeleton';
-import {OrderProducts} from './OrderProducts';
-import {DeliveryProgress} from './DeliveryProgress';
-import {DeliveryActions} from './DeliveryActions';
-import {Action,Badge,DeliveryBox,Detail,Dialog,Disclosure} from './orders.styles';
+import {useOrderDetail} from '../hooks/useOrders.ts';
+import {deliveryStatus,orderDate,purchaseStatus,paymentLink} from '../utils/orders.ts';
+import {money} from '../../cart/utils/cartTotals.ts';
+import {Button,Feedback} from '../../profile/components/profile.styles.ts';
+import {Skeleton} from '../../../shared/components/ui/Skeleton/Skeleton.tsx';
+import {OrderProducts} from './OrderProducts.tsx';
+import {DeliveryProgress} from './DeliveryProgress.tsx';
+import {DeliveryActions} from './DeliveryActions.tsx';
+import {Action,Badge,DeliveryBox,Detail,Dialog,Disclosure} from './orders.styles.ts';
 export function OrderDetails({id,onClose}:{id:string;onClose:()=>void}){
  const ref=useRef<HTMLDialogElement>(null),query=useOrderDetail(id),order=query.data;
  useEffect(()=>{const dialog=ref.current;dialog?.showModal();return()=>dialog?.close();},[]);

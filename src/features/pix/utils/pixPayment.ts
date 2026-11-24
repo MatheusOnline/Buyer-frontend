@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { PixPayment, PixState } from "../types";
+import type { PixPayment, PixState } from "../types.ts";
 export function pixState(payment:PixPayment,now=Date.now()):PixState {
     if (payment.payment_method && payment.payment_method !== "pix") return "unsupported";
     if (payment.status === "approved") return "approved";

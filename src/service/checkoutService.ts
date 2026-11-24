@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "./api";
+import { api } from "./api.ts";
 
 
 
@@ -16,8 +16,8 @@ type CreateCheckoutCartData = {
     cart_item_ids: string[];
 };
 
-export type { CheckoutDetail } from "../features/checkout/types";
-export { useGetCheckout } from "../features/checkout/hooks/useCheckout";
+export type { CheckoutDetail } from "../features/checkout/types.ts";
+export { useGetCheckout } from "../features/checkout/hooks/useCheckout.ts";
 
 const fetchCreateCheckoutDirect = async (data: CreateCheckoutDirectData) => {
     const response = await api.post("/checkout/direct", data);

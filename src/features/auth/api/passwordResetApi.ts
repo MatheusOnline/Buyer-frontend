@@ -1,4 +1,4 @@
-import {api} from '../../../service/api';
+import {api} from '../../../service/api.ts';
 export type ResetChallenge={challenge_id:string;expires_at:string;resend_after_seconds:number;message:string};
 export type ResetTicket={resetToken:string;expires_at:string};
 export const passwordResetApi={

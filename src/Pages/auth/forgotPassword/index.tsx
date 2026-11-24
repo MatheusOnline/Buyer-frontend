@@ -1,1 +1,1 @@
-export {default} from '../../../features/auth/pages/ForgotPasswordPage';
+export {default} from '../../../features/auth/pages/ForgotPasswordPage.tsx';

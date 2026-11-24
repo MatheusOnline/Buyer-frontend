@@ -1,5 +1,5 @@
-import { api } from "../../../service/api";
-import type { LoginCredentials, RegisterCredentials, SessionResponse } from "../types";
+import { api } from "../../../service/api.ts";
+import type { LoginCredentials, RegisterCredentials, SessionResponse } from "../types.ts";
 
 export const authApi = {
     async login(credentials:LoginCredentials) {

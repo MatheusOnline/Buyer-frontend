@@ -1,8 +1,8 @@
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { cartApi } from "../api/cartApi";
-import { useAuth } from "../../auth/model/authStore";
-import type { AddCartItem, CartItem, CartResponse } from "../types";
-import { publishCartFeedback } from "../components/cartFeedback";
+import { cartApi } from "../api/cartApi.ts";
+import { useAuth } from "../../auth/model/authStore.ts";
+import type { AddCartItem, CartItem, CartResponse } from "../types.ts";
+import { publishCartFeedback } from "../components/cartFeedback.ts";
 
 export function useGetCart() {
     const user = useAuth(state=>state.user);

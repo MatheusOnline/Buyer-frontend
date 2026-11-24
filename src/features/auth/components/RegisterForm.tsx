@@ -1,10 +1,10 @@
-import {LegalNotice} from "../../legal/components/LegalNotice";
+import {LegalNotice} from "../../legal/components/LegalNotice.tsx";
 import { Link } from "react-router-dom";
 import { FiArrowRight } from "react-icons/fi";
-import { AuthField } from "./AuthField";
-import { Alert, FieldRow, Form, Signup, Submit } from "./auth.styles";
-import { useRegisterForm } from "../hooks/useRegisterForm";
-import type { RegisterValues } from "../types";
+import { AuthField } from "./AuthField.tsx";
+import { Alert, FieldRow, Form, Signup, Submit } from "./auth.styles.ts";
+import { useRegisterForm } from "../hooks/useRegisterForm.ts";
+import type { RegisterValues } from "../types.ts";
 export function RegisterForm({onSuccess,loginUrl}:{onSuccess:()=>void;loginUrl:string}) {
     const form = useRegisterForm(onSuccess);
     const bind = (name:keyof RegisterValues) => ({name,value:form.values[name],error:form.errors[name],disabled:form.isPending,onChange:(event:React.ChangeEvent<HTMLInputElement>) => form.update(name,event.target.value)});

@@ -1,12 +1,12 @@
 import { Navigate, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { DefaultTemplate } from "../../../Template/DefaultTemplate";
-import { ScrollToTop } from "../../../Components/UI/ScrollToTop";
+import { DefaultTemplate } from "../../../Template/DefaultTemplate.tsx";
+import { ScrollToTop } from "../../../shared/components/ui/ScrollToTop/index.tsx";
 import image from "../../../Assets/Svgs/Auth/register.svg";
-import {SocialLoginButtons} from '../components/SocialLoginButtons';
-import { RegisterForm } from "../components/RegisterForm";
-import { Eyebrow, Intro, RegisterCard, RegisterLayout, SessionStatus, Story } from "../components/auth.styles";
-import { useAuth } from "../model/authStore";
-import { getLoginDestination } from "../utils/redirect";
+import {SocialLoginButtons} from '../components/SocialLoginButtons.tsx';
+import { RegisterForm } from "../components/RegisterForm.tsx";
+import { Eyebrow, Intro, RegisterCard, RegisterLayout, SessionStatus, Story } from "../components/auth.styles.ts";
+import { useAuth } from "../model/authStore.ts";
+import { getLoginDestination } from "../utils/redirect.ts";
 export default function RegisterPage() {
     const {user,loading} = useAuth();
     const navigate = useNavigate();

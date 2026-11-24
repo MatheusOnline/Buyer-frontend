@@ -1,1 +1,1 @@
-export { default } from "../../features/cart/pages/CartPage";
+export { default } from "../../features/cart/pages/CartPage.tsx";

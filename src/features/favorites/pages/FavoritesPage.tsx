@@ -1,11 +1,11 @@
 import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { FiArrowRight, FiChevronRight, FiHeart, FiRefreshCw } from "react-icons/fi";
-import { DefaultTemplate } from "../../../Template/DefaultTemplate";
-import { ScrollToTop } from "../../../Components/UI/ScrollToTop";
-import { CatalogProducts } from "../../../Components/Layout/CatalogProducts/CatalogProducts";
-import { useGetLikes } from "../hooks/useFavorites";
-import { favoritesPage, favoritesPageUrl } from "../utils/favoritesPagination";
-import { Action, Breadcrumb, Count, Empty, Eyebrow, Heading, Pagination } from "../components/favorites.styles";
+import { DefaultTemplate } from "../../../Template/DefaultTemplate.tsx";
+import { ScrollToTop } from "../../../shared/components/ui/ScrollToTop/index.tsx";
+import { CatalogProducts } from "../../catalog/components/CatalogProducts/CatalogProducts.tsx";
+import { useGetLikes } from "../hooks/useFavorites.ts";
+import { favoritesPage, favoritesPageUrl } from "../utils/favoritesPagination.ts";
+import { Action, Breadcrumb, Count, Empty, Eyebrow, Heading, Pagination } from "../components/favorites.styles.ts";
 export default function FavoritesPage() {
     const [params] = useSearchParams();
     const page = favoritesPage(params.get("page"));

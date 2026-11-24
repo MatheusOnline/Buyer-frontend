@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { RegisterCredentials, RegisterErrors, RegisterValues } from "../types";
+import type { RegisterCredentials, RegisterErrors, RegisterValues } from "../types.ts";
 const digits = (value:string) => value.replace(/\D/g, "");
 export function formatCpf(value:string) {
     return digits(value).slice(0,11).replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");

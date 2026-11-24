@@ -1,10 +1,10 @@
 import QRCodeExport from "react-qr-code";
 import { useEffect, useRef, useState } from "react";
 import { FiCheck, FiClock, FiCopy, FiGrid } from "react-icons/fi";
-import type { PixPayment } from "../types";
-import { copyPixCode, pixQrSource, pixRemaining } from "../utils/pixPayment";
-import { money } from "../../cart/utils/cartTotals";
-import { Button, Code, CopyBlock, ErrorBox, Feedback, Primary, QrFrame, QrPanel, Timer } from "./pix.styles";
+import type { PixPayment } from "../types.ts";
+import { copyPixCode, pixQrSource, pixRemaining } from "../utils/pixPayment.ts";
+import { money } from "../../cart/utils/cartTotals.ts";
+import { Button, Code, CopyBlock, ErrorBox, Feedback, Primary, QrFrame, QrPanel, Timer } from "./pix.styles.ts";
 // The package may expose its CommonJS default as a nested export in Vite.
 const QRCode = (QRCodeExport as unknown as {default?:typeof QRCodeExport}).default ?? QRCodeExport;
 export function PixCode({payment,now}:{payment:PixPayment;now:number}) {

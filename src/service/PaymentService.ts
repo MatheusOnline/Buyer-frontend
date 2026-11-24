@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { api } from "./api";
+import { api } from "./api.ts";
 
 /* =========================
    TYPES
@@ -9,7 +9,7 @@ import { api } from "./api";
    GET PAYMENT DATA
 ========================= */
 
-export { usePixPayment as useGetPaymentData } from "../features/pix/hooks/usePixPayment";
+export { usePixPayment as useGetPaymentData } from "../features/pix/hooks/usePixPayment.ts";
 
 /* =========================
    PIX
@@ -29,4 +29,4 @@ export function usePixGenerate() {
   });
 }
 
-export { useCardGenerate } from "../features/card/hooks/useCardPayment";
+export { useCardGenerate } from "../features/card/hooks/useCardPayment.ts";

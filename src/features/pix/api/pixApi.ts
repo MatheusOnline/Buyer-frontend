@@ -1,7 +1,7 @@
 import axios from "axios";
-import { api } from "../../../service/api";
-import { useAuth } from "../../auth/model/authStore";
-import type { PixResponse } from "../types";
+import { api } from "../../../service/api.ts";
+import { useAuth } from "../../auth/model/authStore.ts";
+import type { PixResponse } from "../types.ts";
 export const pixApi = {
     async get(checkoutId:string,signal?:AbortSignal) {
         try {return (await api.get<PixResponse>(`/payment/${checkoutId}?provider=asaas-pix`,{signal})).data;}

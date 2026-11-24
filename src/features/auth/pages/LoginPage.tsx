@@ -1,14 +1,14 @@
 import { Navigate, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { DefaultTemplate } from "../../../Template/DefaultTemplate";
-import { ScrollToTop } from "../../../Components/UI/ScrollToTop";
+import { DefaultTemplate } from "../../../Template/DefaultTemplate.tsx";
+import { ScrollToTop } from "../../../shared/components/ui/ScrollToTop/index.tsx";
 import image from "../../../Assets/Svgs/Auth/login.svg";
-import {SocialLoginButtons} from '../components/SocialLoginButtons';
-import {socialCallbackError} from '../utils/socialErrors';
-import {Alert} from '../components/auth.styles';
-import { LoginForm } from "../components/LoginForm";
-import { Card, Eyebrow, Intro, Layout, SessionStatus, Story } from "../components/auth.styles";
-import { useAuth } from "../model/authStore";
-import { getLoginDestination } from "../utils/redirect";
+import {SocialLoginButtons} from '../components/SocialLoginButtons.tsx';
+import {socialCallbackError} from '../utils/socialErrors.ts';
+import {Alert} from '../components/auth.styles.ts';
+import { LoginForm } from "../components/LoginForm.tsx";
+import { Card, Eyebrow, Intro, Layout, SessionStatus, Story } from "../components/auth.styles.ts";
+import { useAuth } from "../model/authStore.ts";
+import { getLoginDestination } from "../utils/redirect.ts";
 
 export default function LoginPage() {
     const user = useAuth(state => state.user);

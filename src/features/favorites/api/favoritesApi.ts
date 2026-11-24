@@ -1,7 +1,7 @@
 import axios from "axios";
-import { api } from "../../../service/api";
-import { useAuth } from "../../auth/model/authStore";
-import type { CardProductProps } from "../../../types/types";
+import { api } from "../../../service/api.ts";
+import { useAuth } from "../../auth/model/authStore.ts";
+import type { CardProductProps } from "../../../types/types.ts";
 export type FavoritesResponse = {success:boolean;data:{products:CardProductProps[];pagination:{page:number;limit:number;totalItems:number;totalPages:number}}};
 export const favoritesApi = {
     async list(page:number,signal?:AbortSignal) {

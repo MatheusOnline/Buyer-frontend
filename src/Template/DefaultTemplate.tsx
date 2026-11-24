@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { Header } from "../Components/Layout/Header/Header";
-import { Footer } from "@components/Features/Fooster/Footer";
-import { CartFeedbackToast } from "../features/cart/components/CartFeedbackToast";
+import { Header } from "../shared/components/Header/Header.tsx";
+import { Footer } from "../shared/components/Footer/Footer.tsx";
+import { CartFeedbackToast } from "../features/cart/components/CartFeedbackToast.tsx";
 
 export function DefaultTemplate({children}: {children: React.ReactNode}) {
     return <Layout><Header /><Content id="main-content">{children}</Content><Footer /><CartFeedbackToast /></Layout>;

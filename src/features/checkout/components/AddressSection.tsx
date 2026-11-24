@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { FiMapPin, FiPlus } from "react-icons/fi";
-import type { AddressDraft, CheckoutAddress } from "../types";
-import { useCheckoutAddresses, useCreateCheckoutAddress, useSelectCheckoutAddress } from "../hooks/useCheckout";
-import { checkoutError, formatCep } from "../utils/checkoutValidation";
-import { AddressForm } from "./AddressForm";
-import { AddressList, AddressOption, ErrorBox, Hint, Panel, SectionHead, Secondary } from "./checkout.styles";
+import type { AddressDraft, CheckoutAddress } from "../types.ts";
+import { useCheckoutAddresses, useCreateCheckoutAddress, useSelectCheckoutAddress } from "../hooks/useCheckout.ts";
+import { checkoutError, formatCep } from "../utils/checkoutValidation.ts";
+import { AddressForm } from "./AddressForm.tsx";
+import { AddressList, AddressOption, ErrorBox, Hint, Panel, SectionHead, Secondary } from "./checkout.styles.ts";
 export function AddressSection({checkoutId,address,editable,onBusy}:{checkoutId:string;address:CheckoutAddress|null;editable:boolean;onBusy?:(busy:boolean)=>void}) {
     const list = useCheckoutAddresses(editable);
     const attach = useSelectCheckoutAddress(checkoutId);

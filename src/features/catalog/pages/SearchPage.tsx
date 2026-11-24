@@ -1,12 +1,12 @@
 import {isAxiosError} from 'axios';
-import {SearchNotice,SearchEmpty} from '../components/search.styles';
+import {SearchNotice,SearchEmpty} from '../components/search.styles.ts';
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { DefaultTemplate } from "../../../Template/DefaultTemplate";
-import { CatalogProducts } from "@components/Layout/CatalogProducts";
-import { useList } from "../../../service/productsService";
-import { homeCategories } from "../../../data/categories";
-import { CatalogHeader, ErrorState, LoadMore } from "../../../Pages/Home/styled";
+import { DefaultTemplate } from "../../../Template/DefaultTemplate.tsx";
+import { CatalogProducts } from "../components/CatalogProducts/index.tsx";
+import { useList } from "../../../service/productsService.ts";
+import { homeCategories } from "../../../data/categories.ts";
+import { CatalogHeader, ErrorState, LoadMore } from "../../../Pages/Home/styled.ts";
 
 const Search = () => {
     const [params] = useSearchParams();

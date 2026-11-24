@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { authApi } from "../api/authApi";
-import type { AuthUser } from "../types";
+import { authApi } from "../api/authApi.ts";
+import type { AuthUser } from "../types.ts";
 
 type AuthStore = {
     user:AuthUser | null; loading:boolean;

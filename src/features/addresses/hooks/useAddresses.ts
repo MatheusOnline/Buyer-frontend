@@ -1,7 +1,7 @@
 import {useMutation,useQuery,useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
-import {addressesApi} from '../api/addressesApi';
-import {useAuth} from '../../auth/model/authStore';
+import {addressesApi} from '../api/addressesApi.ts';
+import {useAuth} from '../../auth/model/authStore.ts';
 export function useAddresses() {const user=useAuth(state=>state.user);return useQuery({queryKey:['address','profile',user?.email],queryFn:({signal})=>addressesApi.list(signal),enabled:!!user,retry:(count,error)=>!(axios.isAxiosError(error)&&[400,401,403,404].includes(error.response?.status??0))&&count<1});}
 export function useAddressActions() {
     const client=useQueryClient();

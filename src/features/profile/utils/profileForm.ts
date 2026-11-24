@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type {Profile,ProfileDraft,ProfileErrors} from '../types';
+import type {Profile,ProfileDraft,ProfileErrors} from '../types.ts';
 export const profileDraft=(profile:Profile):ProfileDraft=>({firstname:profile.firstname??'',email:profile.email??'',phone:profile.phone??''});
 export const profilePayload=(draft:ProfileDraft):ProfileDraft=>({firstname:draft.firstname.trim(),email:draft.email.trim().toLowerCase(),phone:draft.phone.replace(/\D/g,'')});
 export function profileValidation(draft:ProfileDraft):ProfileErrors {

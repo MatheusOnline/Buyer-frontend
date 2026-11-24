@@ -1,8 +1,8 @@
 import axios from "axios";
-import { api } from "../../../service/api";
-import { useAuth } from "../../auth/model/authStore";
-import type { AddressDraft, CheckoutAddress, CheckoutDetail } from "../types";
-import { addressPayload } from "../utils/checkoutValidation";
+import { api } from "../../../service/api.ts";
+import { useAuth } from "../../auth/model/authStore.ts";
+import type { AddressDraft, CheckoutAddress, CheckoutDetail } from "../types.ts";
+import { addressPayload } from "../utils/checkoutValidation.ts";
 async function request<T>(action:()=>Promise<{data:T}>):Promise<T> {
     try {return (await action()).data;}
     catch(error) {if (axios.isAxiosError(error) && error.response?.status === 401) useAuth.getState().logout();throw error;}

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { pixApi } from "../api/pixApi";
-import { useAuth } from "../../auth/model/authStore";
+import { pixApi } from "../api/pixApi.ts";
+import { useAuth } from "../../auth/model/authStore.ts";
 export function usePixPayment(checkoutId:string) {
     const user=useAuth(state=>state.user);
     return useQuery({queryKey:["payment",checkoutId,user?.email],queryFn:({signal})=>pixApi.get(checkoutId,signal),enabled:!!checkoutId&&!!user,

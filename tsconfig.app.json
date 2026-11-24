@@ -23,7 +23,7 @@
 
 
     "paths": {
-      "@components/*": ["./src/Components/*"],
+      "@components/*": ["./src/shared/components/*"],
       "@assets/*": ["./src/Assets/*"],
       
     }

@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { api } from "./api";
-import type { CardProductProps } from "../types/types";
+import { api } from "./api.ts";
+import type { CardProductProps } from "../types/types.ts";
 
 export interface CatalogResponse {
     success: boolean;

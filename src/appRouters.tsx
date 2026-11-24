@@ -1,29 +1,29 @@
-import {CookieNotice} from "./features/privacy/components/CookieNotice";
+import {CookieNotice} from "./features/privacy/components/CookieNotice.tsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
-import { RequireAuth } from "./features/auth/components/RequireAuth";
-import { Home } from "./Pages/Home/Index";
-const NotFoundPage = lazy(() => import("./features/errors/pages/NotFoundPage"));
-const LegalPage = lazy(() => import("./features/legal/pages/LegalPage"));
-const Product = lazy(() => import("./Pages/Announcement/index"));
-const CartPage = lazy(() => import("./Pages/Cart"));
-const Favorites = lazy(() => import("./Pages/Favorites"));
-const Search = lazy(() => import("./Pages/Search"));
-const Checkout = lazy(() => import("./Pages/Checkout"));
-const Payment = lazy(() => import("./Pages/Payment"));
-const Card = lazy(() => import("./Pages/Payment/Card"));
+import { RequireAuth } from "./features/auth/components/RequireAuth.tsx";
+import { Home } from "./Pages/Home/Index.tsx";
+const NotFoundPage = lazy(() => import("./features/errors/pages/NotFoundPage.tsx"));
+const LegalPage = lazy(() => import("./features/legal/pages/LegalPage.tsx"));
+const Product = lazy(() => import("./Pages/Announcement/index.tsx"));
+const CartPage = lazy(() => import("./Pages/Cart/index.tsx"));
+const Favorites = lazy(() => import("./Pages/Favorites/index.tsx"));
+const Search = lazy(() => import("./Pages/Search/index.tsx"));
+const Checkout = lazy(() => import("./Pages/Checkout/index.tsx"));
+const Payment = lazy(() => import("./Pages/Payment/index.tsx"));
+const Card = lazy(() => import("./Pages/Payment/Card.tsx"));
 
-const Login = lazy(() => import("./Pages/auth/login"));
-const SocialAuth = lazy(() => import("./features/auth/pages/SocialAuthPage"));
-const Register = lazy(() => import("./Pages/auth/register"));
-const ForgotPassword = lazy(() => import("./Pages/auth/forgotPassword"));
+const Login = lazy(() => import("./Pages/auth/login/index.tsx"));
+const SocialAuth = lazy(() => import("./features/auth/pages/SocialAuthPage.tsx"));
+const Register = lazy(() => import("./Pages/auth/register/index.tsx"));
+const ForgotPassword = lazy(() => import("./Pages/auth/forgotPassword/index.tsx"));
 
 
-const ProfileLayout = lazy(() => import("./Pages/Profile/profileLayout"))
-const ProfileHome = lazy(() => import("./Pages/Profile/home"))
-const ProfileOrders = lazy(() => import("./Pages/Profile/orders"))
-const ProfileAnddress = lazy(() => import("./Pages/Profile/address"))
+const ProfileLayout = lazy(() => import("./Pages/Profile/profileLayout.tsx"))
+const ProfileHome = lazy(() => import("./Pages/Profile/home.tsx"))
+const ProfileOrders = lazy(() => import("./Pages/Profile/orders.tsx"))
+const ProfileAnddress = lazy(() => import("./Pages/Profile/address.tsx"))
 
 export const AppRoutes = () => (
   <BrowserRouter>

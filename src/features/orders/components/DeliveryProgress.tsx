@@ -1,5 +1,5 @@
 import {FiCheck,FiCreditCard,FiPackage,FiTruck} from 'react-icons/fi';
-import type {Fulfillment} from '../types';
-import {deliveryDate,deliveryStatus,expectedDeliveryDate} from '../utils/orders';
-import {Timeline} from './orders.styles';
+import type {Fulfillment} from '../types.ts';
+import {deliveryDate,deliveryStatus,expectedDeliveryDate} from '../utils/orders.ts';
+import {Timeline} from './orders.styles.ts';
 export function DeliveryProgress({delivery}:{delivery:Fulfillment}){const failed=delivery.status==='delivery_failed';const current=failed?3:delivery.status==='delivered'?3:delivery.status==='shipped'?2:['preparing','ready'].includes(delivery.status)?1:0;const estimate=expectedDeliveryDate(delivery.delivery_due_at);const steps=[{label:'Pagamento',date:delivery.paid_at,icon:FiCreditCard},{label:'Em preparação',date:delivery.preparing_at,icon:FiPackage},{label:'Coletado · A caminho',date:delivery.collected_at,icon:FiTruck},{label:failed?'Entrega cancelada':'Entregue',date:delivery.delivered_at,icon:FiCheck}];return <><p>{deliveryStatus(delivery).description}</p>{estimate&&delivery.status!=='delivered'&&!failed&&<p className="delivery-estimate"><strong>Previsão de entrega</strong><span>{estimate}</span></p>}<Timeline aria-label="Andamento da entrega">{steps.map((step,index)=><li key={step.label} data-complete={!failed&&(index<current||(index===3&&current===3))} aria-current={index===current?'step':undefined}><span><step.icon aria-hidden="true"/></span><div>{step.label}</div>{deliveryDate(step.date)&&<time dateTime={step.date!}>{deliveryDate(step.date)}</time>}</li>)}</Timeline></>;}

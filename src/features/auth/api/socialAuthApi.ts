@@ -1,6 +1,6 @@
-import {api} from '../../../service/api';
-import type {SessionResponse} from '../types';
-import {getLoginDestination} from '../utils/redirect';
+import {api} from '../../../service/api.ts';
+import type {SessionResponse} from '../types.ts';
+import {getLoginDestination} from '../utils/redirect.ts';
 export type SocialProvider='google'|'apple';
 export type SocialPending={provider:SocialProvider;kind:'register'|'link';email:string;firstname:string;lastname:string;requires_password:boolean;destination:string};
 export const socialAuthApi={

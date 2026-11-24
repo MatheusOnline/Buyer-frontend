@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Panel,Button} from '../../profile/components/profile.styles';
+import {Panel,Button} from '../../profile/components/profile.styles.ts';
 export const Header=styled.header`display:flex;align-items:center;justify-content:space-between;gap:16px;h2{font-size:22px;color:#365c74;margin:0 0 8px;}p{font-size:12px;color:#8299a8;line-height:1.8;margin:0;}@media(max-width:550px){align-items:start;flex-direction:column;}`;
 export const Hint=styled.div`display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;color:#8299a8;line-height:1.8;flex-wrap:wrap;strong{color:#52768d;}`;
 export const Grid=styled.div`display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;@media(max-width:650px){grid-template-columns:1fr;}`;

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiArrowRight, FiChevronRight, FiShoppingBag } from "react-icons/fi";
-import { DefaultTemplate } from "../../../Template/DefaultTemplate";
-import { ScrollToTop } from "../../../Components/UI/ScrollToTop";
-import { Skeleton } from "../../../Components/UI/Skeleton/Skeleton";
-import { useCartBusy, useGetCart } from "../hooks/useCart";
-import { useCreateCheckoutCart } from "../../../service/checkoutService";
-import { cartError, cartTotals, money } from "../utils/cartTotals";
-import { CartLine } from "../components/CartLine";
-import { Back, Breadcrumb, Error, Heading, Layout, List, Primary, State, Summary, Toolbar, Total } from "../components/cart.styles";
+import { DefaultTemplate } from "../../../Template/DefaultTemplate.tsx";
+import { ScrollToTop } from "../../../shared/components/ui/ScrollToTop/index.tsx";
+import { Skeleton } from "../../../shared/components/ui/Skeleton/Skeleton.tsx";
+import { useCartBusy, useGetCart } from "../hooks/useCart.ts";
+import { useCreateCheckoutCart } from "../../../service/checkoutService.ts";
+import { cartError, cartTotals, money } from "../utils/cartTotals.ts";
+import { CartLine } from "../components/CartLine.tsx";
+import { Back, Breadcrumb, Error, Heading, Layout, List, Primary, State, Summary, Toolbar, Total } from "../components/cart.styles.ts";
 export default function CartPage() {
     const query = useGetCart();
     const [excluded,setExcluded] = useState<string[]>([]);

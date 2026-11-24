@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient, type InfiniteData } from "@tanstack/react-query";
-import { favoritesApi, type FavoritesResponse } from "../api/favoritesApi";
-import { useAuth } from "../../auth/model/authStore";
-import type { CardProductProps, ProductInformationProps } from "../../../types/types";
-import type { CatalogResponse } from "../../../service/productsService";
+import { favoritesApi, type FavoritesResponse } from "../api/favoritesApi.ts";
+import { useAuth } from "../../auth/model/authStore.ts";
+import type { CardProductProps, ProductInformationProps } from "../../../types/types.ts";
+import type { CatalogResponse } from "../../../service/productsService.ts";
 
 export function useGetLikes(page=1) {
     const user=useAuth(state=>state.user);

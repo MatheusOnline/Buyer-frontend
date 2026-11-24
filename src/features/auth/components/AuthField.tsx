@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { InputHTMLAttributes } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { Field, Label, Input, PasswordField, Toggle, FieldError, Hint } from "./auth.styles";
+import { Field, Label, Input, PasswordField, Toggle, FieldError, Hint } from "./auth.styles.ts";
 type Props = InputHTMLAttributes<HTMLInputElement> & {id:string;label:string;error?:string;hint?:string;password?:boolean};
 export function AuthField({id,label,error,hint,password,...input}:Props) {
     const [visible,setVisible] = useState(false);

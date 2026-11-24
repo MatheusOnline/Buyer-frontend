@@ -1,12 +1,12 @@
 import {useState} from 'react';
 import {Link,Outlet,useNavigate} from 'react-router-dom';
 import {FiChevronRight,FiGrid,FiLogOut,FiMapPin,FiShoppingBag} from 'react-icons/fi';
-import {DefaultTemplate} from '../../../Template/DefaultTemplate';
-import {ScrollToTop} from '../../../Components/UI/ScrollToTop';
-import {useAuth} from '../../auth/model/authStore';
-import {useLogout} from '../../../service/authService';
-import {initials} from '../utils/profileForm';
-import {Avatar,Breadcrumb,Content,Feedback,Heading,Identity,Logout,Nav,Navigation,Shell,Sidebar} from '../components/profile.styles';
+import {DefaultTemplate} from '../../../Template/DefaultTemplate.tsx';
+import {ScrollToTop} from '../../../shared/components/ui/ScrollToTop/index.tsx';
+import {useAuth} from '../../auth/model/authStore.ts';
+import {useLogout} from '../../../service/authService.ts';
+import {initials} from '../utils/profileForm.ts';
+import {Avatar,Breadcrumb,Content,Feedback,Heading,Identity,Logout,Nav,Navigation,Shell,Sidebar} from '../components/profile.styles.ts';
 export default function ProfileLayout() {
     const user=useAuth(state=>state.user);
     const logout=useLogout();

@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import type { FormEvent } from "react";
-import type { RegisterErrors, RegisterValues } from "../types";
-import { useRegister } from "./useRegister";
-import { formatCpf, formatPhone, registerFailure, registerPayload, validateRegister } from "../utils/registerValidation";
+import type { RegisterErrors, RegisterValues } from "../types.ts";
+import { useRegister } from "./useRegister.ts";
+import { formatCpf, formatPhone, registerFailure, registerPayload, validateRegister } from "../utils/registerValidation.ts";
 const empty:RegisterValues = {firstname:"",lastname:"",email:"",cpf:"",phone:"",password:"",confirmPassword:""};
 export function useRegisterForm(onSuccess:()=>void) {
     const [values,setValues] = useState(empty);

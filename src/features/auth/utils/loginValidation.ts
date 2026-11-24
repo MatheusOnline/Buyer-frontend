@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { LoginCredentials } from "../types";
+import type { LoginCredentials } from "../types.ts";
 export function validateLogin(values:LoginCredentials) {
     const errors:{email?:string;password?:string} = {};
     if (!values.email.trim()) errors.email = "Informe seu e-mail.";

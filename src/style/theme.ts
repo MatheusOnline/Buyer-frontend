@@ -1,5 +1,5 @@
-import { Colors } from "./tokens/Colors";
-import { fontSize } from "./tokens/Fonts";
+import { Colors } from "./tokens/Colors.ts";
+import { fontSize } from "./tokens/Fonts.ts";
 
 import "styled-components";
 

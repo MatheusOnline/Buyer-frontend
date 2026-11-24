@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { CartItem } from "../types";
+import type { CartItem } from "../types.ts";
 export const money = (value:number)=>value.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 export function cartTotals(items:CartItem[]) {
     const selected = items.filter(item=>item.available);

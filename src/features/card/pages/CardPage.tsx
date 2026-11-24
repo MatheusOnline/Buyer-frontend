@@ -3,17 +3,17 @@ import { Link, useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { FiArrowLeft, FiCheckCircle, FiChevronRight, FiClock, FiCreditCard, FiLock, FiMapPin, FiRefreshCw, FiXCircle } from 'react-icons/fi';
 import styled from 'styled-components';
-import { DefaultTemplate } from '../../../Template/DefaultTemplate';
-import { ScrollToTop } from '../../../Components/UI/ScrollToTop';
-import { Skeleton } from '../../../Components/UI/Skeleton/Skeleton';
-import { useGetCheckout } from '../../checkout/hooks/useCheckout';
-import { CheckoutProducts } from '../../checkout/components/CheckoutProducts';
-import { money } from '../../cart/utils/cartTotals';
-import { CardForm } from '../components/CardForm';
-import { useCardGenerate, useCardStatus } from '../hooks/useCardPayment';
-import { cardMessages, cardState } from '../utils/cardPayment';
-import type { CardRequest, CardResult } from '../api/cardApi';
-import { Action, Actions, Back, Breadcrumb, Button, ErrorBox, Heading, Layout, Panel, Reference, Result, Stack, StatusText } from '../../pix/components/pix.styles';
+import { DefaultTemplate } from '../../../Template/DefaultTemplate.tsx';
+import { ScrollToTop } from '../../../shared/components/ui/ScrollToTop/index.tsx';
+import { Skeleton } from '../../../shared/components/ui/Skeleton/Skeleton.tsx';
+import { useGetCheckout } from '../../checkout/hooks/useCheckout.ts';
+import { CheckoutProducts } from '../../checkout/components/CheckoutProducts.tsx';
+import { money } from '../../cart/utils/cartTotals.ts';
+import { CardForm } from '../components/CardForm.tsx';
+import { useCardGenerate, useCardStatus } from '../hooks/useCardPayment.ts';
+import { cardMessages, cardState } from '../utils/cardPayment.ts';
+import type { CardRequest, CardResult } from '../api/cardApi.ts';
+import { Action, Actions, Back, Breadcrumb, Button, ErrorBox, Heading, Layout, Panel, Reference, Result, Stack, StatusText } from '../../pix/components/pix.styles.ts';
 export default function CardPage() {const {checkoutId}=useParams();return <CardContent key={checkoutId} id={checkoutId??''}/>;}
 function CardContent({id}:{id:string}) {
     const checkout=useGetCheckout(id);

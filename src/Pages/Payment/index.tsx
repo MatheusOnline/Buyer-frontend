@@ -1,1 +1,1 @@
-export { default } from "../../features/pix/pages/PixPage";
+export { default } from "../../features/pix/pages/PixPage.tsx";

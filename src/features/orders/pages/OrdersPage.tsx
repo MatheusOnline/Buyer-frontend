@@ -1,16 +1,16 @@
 import {useState} from 'react';
 import {useSearchParams} from 'react-router-dom';
 import {FiArrowRight,FiCheckCircle,FiClock,FiRefreshCw,FiShoppingBag,FiTruck} from 'react-icons/fi';
-import {useOrders} from '../hooks/useOrders';
-import {orderDate,orderFilter,orderPage,orderStatus,purchaseStatus,deliveryStatus,paymentLink} from '../utils/orders';
-import {OrderProducts} from '../components/OrderProducts';
-import {DeliveryActions} from '../components/DeliveryActions';
-import {OrderDetails} from '../components/OrderDetails';
-import {Action,Badge,Card,CardFooter,CardHeader,DeliveryBox,Empty,Filter,Filters,Header,Pagination} from '../components/orders.styles';
-import {Button,Feedback} from '../../profile/components/profile.styles';
-import {money} from '../../cart/utils/cartTotals';
-import {Skeleton} from '../../../Components/UI/Skeleton/Skeleton';
-import type {OrderFilter} from '../types';
+import {useOrders} from '../hooks/useOrders.ts';
+import {orderDate,orderFilter,orderPage,orderStatus,purchaseStatus,deliveryStatus,paymentLink} from '../utils/orders.ts';
+import {OrderProducts} from '../components/OrderProducts.tsx';
+import {DeliveryActions} from '../components/DeliveryActions.tsx';
+import {OrderDetails} from '../components/OrderDetails.tsx';
+import {Action,Badge,Card,CardFooter,CardHeader,DeliveryBox,Empty,Filter,Filters,Header,Pagination} from '../components/orders.styles.ts';
+import {Button,Feedback} from '../../profile/components/profile.styles.ts';
+import {money} from '../../cart/utils/cartTotals.ts';
+import {Skeleton} from '../../../shared/components/ui/Skeleton/Skeleton.tsx';
+import type {OrderFilter} from '../types.ts';
 const filters:{value:OrderFilter;label:string}[]=[{value:'all',label:'Todas'},{value:'pending',label:'Pendentes'},{value:'paid',label:'Pagas'},{value:'closed',label:'Encerradas'}];
 export default function OrdersPage() {
     const [params,setParams]=useSearchParams();

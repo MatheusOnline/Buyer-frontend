@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { DefaultTemplate } from "../../../Template/DefaultTemplate";
-import { ScrollToTop } from "../../../Components/UI/ScrollToTop";
-import { legalContact, legalVersion, terms, privacy } from "../content";
+import { DefaultTemplate } from "../../../Template/DefaultTemplate.tsx";
+import { ScrollToTop } from "../../../shared/components/ui/ScrollToTop/index.tsx";
+import { legalContact, legalVersion, terms, privacy } from "../content.ts";
 export default function LegalPage({ kind }: { kind: "terms" | "privacy" }) {
   const isPrivacy = kind === "privacy",
     title = isPrivacy ? "Política de Privacidade" : "Termos de Uso",

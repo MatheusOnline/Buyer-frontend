@@ -1,9 +1,9 @@
 import {Link} from 'react-router-dom';
 import {FiArrowRight,FiHeart,FiLock,FiMapPin,FiShoppingBag} from 'react-icons/fi';
-import {Skeleton} from '../../../Components/UI/Skeleton/Skeleton';
-import {useProfile} from '../hooks/useProfile';
-import {ProfileForm} from '../components/ProfileForm';
-import {Button,Feedback,Panel,Security,Shortcut,Shortcuts} from '../components/profile.styles';
+import {Skeleton} from '../../../shared/components/ui/Skeleton/Skeleton.tsx';
+import {useProfile} from '../hooks/useProfile.ts';
+import {ProfileForm} from '../components/ProfileForm.tsx';
+import {Button,Feedback,Panel,Security,Shortcut,Shortcuts} from '../components/profile.styles.ts';
 export default function ProfilePage() {
     const query=useProfile();
     return <><Shortcuts><Shortcut to="/profile/orders"><FiShoppingBag/><div><strong>Minhas compras</strong><span>Acompanhe seus pedidos</span></div><FiArrowRight/></Shortcut><Shortcut to="/profile/address"><FiMapPin/><div><strong>Meus endereços</strong><span>Organize suas entregas</span></div><FiArrowRight/></Shortcut><Shortcut to="/favorites"><FiHeart/><div><strong>Favoritos</strong><span>Reveja seus achados</span></div><FiArrowRight/></Shortcut></Shortcuts>

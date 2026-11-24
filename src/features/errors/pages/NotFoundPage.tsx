@@ -2,8 +2,8 @@ import {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {FiArrowRight,FiHome,FiMapPin} from 'react-icons/fi';
 import styled from 'styled-components';
-import {DefaultTemplate} from '../../../Template/DefaultTemplate';
-import {ScrollToTop} from '../../../Components/UI/ScrollToTop';
+import {DefaultTemplate} from '../../../Template/DefaultTemplate.tsx';
+import {ScrollToTop} from '../../../shared/components/ui/ScrollToTop/index.tsx';
 export default function NotFoundPage(){
  useEffect(()=>{
   const previousTitle=document.title;

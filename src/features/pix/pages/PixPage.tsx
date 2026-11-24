@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiChevronRight, FiClock, FiRefreshCw, FiXCircle } from "react-icons/fi";
-import { DefaultTemplate } from "../../../Template/DefaultTemplate";
-import { ScrollToTop } from "../../../Components/UI/ScrollToTop";
-import { Skeleton } from "../../../Components/UI/Skeleton/Skeleton";
-import { usePixPayment } from "../hooks/usePixPayment";
-import { pixError, pixMessages, pixState } from "../utils/pixPayment";
-import { PixCode } from "../components/PixCode";
-import { Action, Actions, Back, Breadcrumb, Button, ErrorBox, Heading, Instructions, Layout, Panel, Reference, Result, Stack, Status, StatusText } from "../components/pix.styles";
+import { DefaultTemplate } from "../../../Template/DefaultTemplate.tsx";
+import { ScrollToTop } from "../../../shared/components/ui/ScrollToTop/index.tsx";
+import { Skeleton } from "../../../shared/components/ui/Skeleton/Skeleton.tsx";
+import { usePixPayment } from "../hooks/usePixPayment.ts";
+import { pixError, pixMessages, pixState } from "../utils/pixPayment.ts";
+import { PixCode } from "../components/PixCode.tsx";
+import { Action, Actions, Back, Breadcrumb, Button, ErrorBox, Heading, Instructions, Layout, Panel, Reference, Result, Stack, Status, StatusText } from "../components/pix.styles.ts";
 export default function PixPage() {const {checkoutId}=useParams();return <PixContent key={checkoutId} checkoutId={checkoutId??""}/>;}
 function PixContent({checkoutId}:{checkoutId:string}) {
     const query=usePixPayment(checkoutId);

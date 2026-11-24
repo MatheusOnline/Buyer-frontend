@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FiCheck, FiX, FiShoppingBag } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { subscribeCartFeedback, type CartFeedbackDetail } from "./cartFeedback";
+import { subscribeCartFeedback, type CartFeedbackDetail } from "./cartFeedback.ts";
 
 export function CartFeedbackToast() {
     const [feedback,setFeedback]=useState<CartFeedbackDetail|null>(null);

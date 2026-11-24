@@ -1,1 +1,1 @@
-export {default} from '../../features/profile/pages/ProfileLayout';
+export {default} from '../../features/profile/pages/ProfileLayout.tsx';

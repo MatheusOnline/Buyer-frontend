@@ -1,4 +1,4 @@
-import type {Order,OrderFilter} from '../types';
+import type {Order,OrderFilter} from '../types.ts';
 export function orderFilter(value:string|null):OrderFilter {return ['pending','paid','closed'].includes(value??'')?value as OrderFilter:'all';}
 export function orderPage(value:string|null) {const page=Number(value);return Number.isSafeInteger(page)&&page>=1&&page<=100000?page:1;}
 export function orderStatus(order:Pick<Order,'status'|'expires_at'|'payment_id'>,now=Date.now()) {
@@ -16,7 +16,7 @@ export function paymentLink(order:Pick<Order,'checkoutId'|'payment_id'|'payment_
 }
 export function orderDate(value:string|null) {if(!value||!Number.isFinite(new Date(value).getTime()))return 'Data indisponível';return new Intl.DateTimeFormat('pt-BR',{dateStyle:'medium'}).format(new Date(value));}
 
-export function deliveryStatus(item:import('../types').Fulfillment){
+export function deliveryStatus(item:import('../types.ts').Fulfillment){
  if(item.payment_status==='refunded'||item.payment_status==='charged_back')return {key:'closed',label:'Pagamento estornado',description:'Consulte o suporte para informações sobre o pagamento.'};
  if(item.delivery_reported_at)return {key:'review',label:'Entrega em análise',description:'Você informou que não recebeu este pacote.'};
  if(item.receipt_confirmed_at)return {key:'delivered',label:'Recebimento confirmado',description:'Você confirmou que recebeu este pacote.'};

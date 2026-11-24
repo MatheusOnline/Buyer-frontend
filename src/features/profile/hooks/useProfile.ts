@@ -1,8 +1,8 @@
 import {useMutation,useQuery,useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
-import {profileApi} from '../api/profileApi';
-import {useAuth} from '../../auth/model/authStore';
-import type {ProfileResponse} from '../types';
+import {profileApi} from '../api/profileApi.ts';
+import {useAuth} from '../../auth/model/authStore.ts';
+import type {ProfileResponse} from '../types.ts';
 export function useProfile() {
     const user=useAuth(state=>state.user);
     return useQuery({queryKey:['profile',user?.email],queryFn:({signal})=>profileApi.get(signal),enabled:!!user,retry:(count,error)=>!(axios.isAxiosError(error)&&[401,403,404].includes(error.response?.status??0))&&count<1});

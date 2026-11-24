@@ -1,9 +1,9 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import type { AddressDraft } from "../types";
-import { formatCep, validateAddress } from "../utils/checkoutValidation";
-import { Field, Form, Primary, Row, Secondary } from "./checkout.styles";
-import {usePostalCode} from "../../addresses/hooks/usePostalCode";
+import type { AddressDraft } from "../types.ts";
+import { formatCep, validateAddress } from "../utils/checkoutValidation.ts";
+import { Field, Form, Primary, Row, Secondary } from "./checkout.styles.ts";
+import {usePostalCode} from "../../addresses/hooks/usePostalCode.ts";
 const initial:AddressDraft = {label:"",postal_code:"",city:"",street:"",number:"",district:"",complement:"",reference:""};
 export function AddressForm({onSave,onCancel,busy}:{onSave:(values:AddressDraft)=>void;onCancel:()=>void;busy:boolean}) {
     const [values,setValues] = useState(initial);

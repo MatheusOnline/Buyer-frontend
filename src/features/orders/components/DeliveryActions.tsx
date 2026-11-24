@@ -1,11 +1,11 @@
 import {useEffect,useRef,useState} from 'react';
 import axios from 'axios';
 import {FiCheck,FiMail,FiMessageCircle,FiX} from 'react-icons/fi';
-import type {Fulfillment} from '../types';
-import {useDeliveryResponse} from '../hooks/useOrders';
-import {deliveryDate,supportLinks} from '../utils/orders';
-import {Button,Feedback} from '../../profile/components/profile.styles';
-import {ContactLink,DeliveryActionsRow,Detail,Dialog,Primary} from './orders.styles';
+import type {Fulfillment} from '../types.ts';
+import {useDeliveryResponse} from '../hooks/useOrders.ts';
+import {deliveryDate,supportLinks} from '../utils/orders.ts';
+import {Button,Feedback} from '../../profile/components/profile.styles.ts';
+import {ContactLink,DeliveryActionsRow,Detail,Dialog,Primary} from './orders.styles.ts';
 function failure(error:unknown){if(axios.isAxiosError(error)){if(!error.response)return 'Não foi possível conectar. Confira sua internet e tente novamente.';if(error.response.status===409)return 'O pedido foi atualizado e esta ação não está mais disponível. Atualize a compra para conferir.';}return 'Não foi possível salvar sua resposta. Tente novamente.';}
 export function DeliveryActions({delivery}:{delivery:Fulfillment}){
  const [mode,setMode]=useState<'confirm'|'report'|'help'|null>(null);const ref=useRef<HTMLDialogElement>(null);const mutation=useDeliveryResponse();const lock=useRef(false);const contact=supportLinks(delivery.reference);

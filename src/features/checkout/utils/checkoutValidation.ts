@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { AddressDraft, CheckoutDetail } from "../types";
+import type { AddressDraft, CheckoutDetail } from "../types.ts";
 export function validateAddress(values:AddressDraft) {
     const errors:Partial<Record<keyof AddressDraft,string>> = {};
     const fields = {label:[100,"Dê um nome para este endereço."],city:[100,"Informe a cidade."],street:[255,"Informe a rua."],number:[6,"Informe o número ou S/N."],district:[255,"Informe o bairro."]} as const;

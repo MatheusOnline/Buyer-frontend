@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { FiImage, FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
-import type { CartItem } from "../types";
-import { useDecreaseItemToCart, useIncreaseItemToCart, useRemoveItemToCart } from "../hooks/useCart";
-import { cartError, money } from "../utils/cartTotals";
-import { storeArrivalLabel } from "../utils/storeOpening";
-import { Badge, Bottom, Counter, DeliveryEstimate, Error, Info, Item, Picture, PriceRow, Remove } from "./cart.styles";
+import type { CartItem } from "../types.ts";
+import { useDecreaseItemToCart, useIncreaseItemToCart, useRemoveItemToCart } from "../hooks/useCart.ts";
+import { cartError, money } from "../utils/cartTotals.ts";
+import { storeArrivalLabel } from "../utils/storeOpening.ts";
+import { Badge, Bottom, Counter, DeliveryEstimate, Error, Info, Item, Picture, PriceRow, Remove } from "./cart.styles.ts";
 import { Link } from "react-router-dom";
 export function CartLine({item,checked,onToggle}:{item:CartItem;checked:boolean;onToggle:()=>void}) {
     const [failed,setFailed] = useState(false);

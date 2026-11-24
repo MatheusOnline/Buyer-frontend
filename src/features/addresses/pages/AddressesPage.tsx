@@ -1,13 +1,13 @@
 import {useState} from 'react';
 import {FiCheck,FiEdit2,FiHome,FiMapPin,FiPlus,FiRefreshCw,FiTrash2} from 'react-icons/fi';
-import {Skeleton} from '../../../Components/UI/Skeleton/Skeleton';
-import {Button,Feedback} from '../../profile/components/profile.styles';
-import {useAddresses,useAddressActions} from '../hooks/useAddresses';
-import {addressError,formatCep} from '../utils/addressForm';
-import type {AddressValues,SavedAddress} from '../types';
-import {Badge,Card,Danger,Empty,Grid,Header,Hint,SmallButton} from '../components/addresses.styles';
-import {AddressEditor} from '../components/AddressEditor';
-import {RemoveAddress} from '../components/RemoveAddress';
+import {Skeleton} from '../../../shared/components/ui/Skeleton/Skeleton.tsx';
+import {Button,Feedback} from '../../profile/components/profile.styles.ts';
+import {useAddresses,useAddressActions} from '../hooks/useAddresses.ts';
+import {addressError,formatCep} from '../utils/addressForm.ts';
+import type {AddressValues,SavedAddress} from '../types.ts';
+import {Badge,Card,Danger,Empty,Grid,Header,Hint,SmallButton} from '../components/addresses.styles.ts';
+import {AddressEditor} from '../components/AddressEditor.tsx';
+import {RemoveAddress} from '../components/RemoveAddress.tsx';
 export default function AddressesPage() {
     const query=useAddresses();const actions=useAddressActions();
     const addresses=query.data?.data??[];

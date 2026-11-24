@@ -1,8 +1,8 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { FiCreditCard } from 'react-icons/fi';
 import styled from 'styled-components';
-import { ErrorBox, Button } from '../../pix/components/pix.styles';
-import type { CardRequest } from '../api/cardApi';
+import { ErrorBox, Button } from '../../pix/components/pix.styles.ts';
+import type { CardRequest } from '../api/cardApi.ts';
 
 type Props = { checkoutId:string; onPay:(request:CardRequest)=>Promise<void>; pending?:boolean };
 const digits=(value:string,max:number)=>value.replace(/\D/g,'').slice(0,max);

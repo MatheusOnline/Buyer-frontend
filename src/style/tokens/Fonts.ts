@@ -1,4 +1,4 @@
-import { device } from "../breakpoints"
+import { device } from "../breakpoints.ts"
 
 const Fonts = {
     default: 'Inter, sans-serif',

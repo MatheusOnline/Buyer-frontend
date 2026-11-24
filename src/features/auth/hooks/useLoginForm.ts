@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import type { FormEvent } from "react";
-import { useLogin } from "./useLogin";
-import { loginErrorMessage, validateLogin } from "../utils/loginValidation";
-import type { LoginCredentials } from "../types";
+import { useLogin } from "./useLogin.ts";
+import { loginErrorMessage, validateLogin } from "../utils/loginValidation.ts";
+import type { LoginCredentials } from "../types.ts";
 
 export function useLoginForm(onSuccess:()=>void) {
     const [values,setValues] = useState<LoginCredentials>({email:"",password:""});

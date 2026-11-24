@@ -1,8 +1,8 @@
 import {useEffect,useRef} from 'react';
 import {FiX} from 'react-icons/fi';
-import type {SavedAddress} from '../types';
-import {Actions,Button,Feedback} from '../../profile/components/profile.styles';
-import {Danger,Dialog} from './addresses.styles';
+import type {SavedAddress} from '../types.ts';
+import {Actions,Button,Feedback} from '../../profile/components/profile.styles.ts';
+import {Danger,Dialog} from './addresses.styles.ts';
 export function RemoveAddress({address,onClose,onConfirm,busy,error}:{address:SavedAddress;onClose:()=>void;onConfirm:()=>void;busy:boolean;error:string}) {
     const ref=useRef<HTMLDialogElement>(null);
     useEffect(()=>{const element=ref.current;element?.showModal();return()=>element?.close();},[]);
