@@ -6,6 +6,7 @@ import { useAuth } from "../../../stores/useAuthStore";
 import { useLikedProduct } from "../../../service/likeService";
 import { useAddItemToCart } from "../../../service/cartService";
 import type { CardProductProps } from "../../../types/types";
+import type { CartItem } from "../../../features/cart/types";
 
 const currency = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
@@ -43,7 +44,8 @@ export function ProductCard({
             navigate("/auth/login", {state:{from:url}});
             return;
         }
-        cart.mutate(id);
+        const optimisticItem:CartItem={id:`optimistic:${id}`,product_id:id,sku_id:null,title:name,store:store||"Loja local",store_is_open:true,image:image||null,variation:null,sku:null,quantity:1,price,original_price:original,promotion:promotion??null,available_stock:available_stock??9999,available:!soldOut,reason:null,line_total:price};
+        cart.mutate({value:id,optimisticItem});
     }
 
     return (
@@ -53,9 +55,9 @@ export function ProductCard({
                     type="button"
                     aria-label={liked ? `Remover ${name} dos favoritos` : `Favoritar ${name}`}
                     aria-pressed={liked}
-                    disabled={favorite.isPending}
+                    aria-busy={favorite.isPending}
                     $liked={liked}
-                    onClick={() => user ? favorite.mutate(id) : navigate("/auth/login", {state:{from:location.pathname + location.search}})}
+                    onClick={() => user ? favorite.mutate({productId:id,currentlyLiked:liked}) : navigate("/auth/login", {state:{from:location.pathname + location.search}})}
                 >
                     <FiHeart aria-hidden="true" />
                 </Favorite>
@@ -90,17 +92,17 @@ export function ProductCard({
                     </PriceBlock>
                     <CartButton
                         type="button"
-                        disabled={soldOut || cart.isPending}
+                        disabled={soldOut}
                         aria-label={soldOut ? `${name} sem estoque` : hasOptions ? `Escolher opções de ${name}` : `Adicionar ${name} ao carrinho`}
                         title={soldOut ? "Sem estoque" : hasOptions ? "Escolher opções" : "Adicionar ao carrinho"}
                         aria-busy={cart.isPending}
                         onClick={handleCart}
                     >
-                        {cart.isSuccess ? <FiCheck aria-hidden="true" /> : <FiShoppingCart aria-hidden="true" />}
+                        {cart.isPending || cart.isSuccess ? <FiCheck aria-hidden="true" /> : <FiShoppingCart aria-hidden="true" />}
                     </CartButton>
                 </PurchaseRow>
                 {soldOut && <Availability>Sem estoque no momento</Availability>}
-                {cart.isSuccess && <ScreenReaderStatus role="status">Produto adicionado ao carrinho.</ScreenReaderStatus>}
+                {(cart.isPending || cart.isSuccess) && <ScreenReaderStatus role="status">{cart.isPending?"Adicionando produto ao carrinho.":"Produto adicionado ao carrinho."}</ScreenReaderStatus>}
                 {(favorite.isError || cart.isError) && (
                     <ErrorText role="alert">{cart.isError ? "Não foi possível adicionar ao carrinho." : "Não foi possível atualizar os favoritos."}</ErrorText>
                 )}

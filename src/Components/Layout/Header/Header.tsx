@@ -22,7 +22,7 @@ export const Header = () => {
                     <button type="submit" aria-label="Buscar"><FiSearch /></button>
                 </SearchForm>
                 <Actions aria-label="Sua conta e compras">
-                    <Link to="/profile" aria-label={user ? "Minha conta" : "Entrar ou cadastrar-se"}><FiUser /><span><small>{user ? "Olá, boas compras!" : "Boas-vindas!"}</small>{user ? "Minha conta" : "Entre ou cadastre-se"}</span></Link>
+                    <Link to={user ? "/profile" : "/auth/login"} aria-label={user ? `Conta de ${user.name}` : "Entrar ou cadastrar-se"}><FiUser /><span><small>{user ? `Olá, ${user.name.trim().split(/\s+/)[0]}!` : "Boas-vindas!"}</small>{user ? "Minha conta" : "Entre ou cadastre-se"}</span></Link>
                     <IconLink to="/favorites" aria-label="Favoritos"><FiHeart /></IconLink>
                     <IconLink to="/cart" aria-label="Carrinho"><FiShoppingBag /></IconLink>
                 </Actions>

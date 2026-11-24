@@ -11,7 +11,7 @@ export function Like({ liked,product_id }: LikeProps) {
 
     function handleLike(e: React.MouseEvent) {
         e.stopPropagation();
-        toggleLike(product_id);
+        toggleLike({ productId: product_id, currentlyLiked: liked });
     }
     
     return (

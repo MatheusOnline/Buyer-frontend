@@ -6,6 +6,7 @@ import type { ProductInformationProps, ProductVariation } from "../../../types/t
 import { useAuth } from "../../../stores/useAuthStore";
 import { useAddItemToCart } from "../../../service/cartService";
 import { cartError } from "../../../features/cart/utils/cartTotals";
+import type { CartItem } from "../../../features/cart/types";
 import { useCreateCheckoutDirect } from "../../../service/checkoutService";
 
 const money = (value: number) => value.toLocaleString("pt-BR", {style:"currency",currency:"BRL"});
@@ -27,7 +28,7 @@ export const ProductInfo = ({product, isLoading, selectedSku, onSelectSku}: {pro
     const onSale = offer > 0 && offer < original;
     const price = onSale ? offer : original;
     const promotion = activeSku ? activeSku.promotion : product.promotion;
-    const busy = cart.isPending || checkout.isPending;
+    const busy = checkout.isPending;
     function purchase(direct:boolean) {
         if (needsSelection || !stock) return;
         if (!user) {navigate("/auth/login",{state:{from:location.pathname + location.search}});return;}
@@ -35,7 +36,12 @@ export const ProductInfo = ({product, isLoading, selectedSku, onSelectSku}: {pro
             const checkoutId = data?.data?.checkoutId;
             if (checkoutId) navigate(`/payment/checkout/${checkoutId}`);
         }});
-        else cart.mutate({product_id:product.id,sku_id:activeSku?.id,quantity:Math.min(quantity,stock)});
+        else {
+            const itemQuantity=Math.min(quantity,stock);
+            const itemPrice=Number(price);
+            const optimisticItem:CartItem={id:`optimistic:${product.id}:${activeSku?.id??"default"}`,product_id:product.id,sku_id:activeSku?.id??null,title:product.title,store:product.store||"Loja local",store_is_open:true,image:activeSku?.image_url??product.image??product.images?.[0]??null,variation:activeSku?.variation_value??null,sku:activeSku?.sku??null,quantity:itemQuantity,price:itemPrice,original_price:original,promotion:promotion??null,available_stock:stock,available:stock>0,reason:null,line_total:itemPrice*itemQuantity};
+            cart.mutate({value:{product_id:product.id,sku_id:activeSku?.id,quantity:itemQuantity},optimisticItem});
+        }
     }
     return <Panel>
         <Eyebrow>DO COMÉRCIO LOCAL PARA VOCÊ</Eyebrow>
@@ -52,7 +58,6 @@ export const ProductInfo = ({product, isLoading, selectedSku, onSelectSku}: {pro
         <Controls><span>Quantidade</span><Counter><button type="button" aria-label="Diminuir quantidade" disabled={quantity <= 1 || busy} onClick={() => setQuantity(value => value - 1)}><FiMinus /></button><output aria-live="polite">{Math.min(quantity,stock || 1)}</output><button type="button" aria-label="Aumentar quantidade" disabled={quantity >= stock || busy} onClick={() => setQuantity(value => value + 1)}><FiPlus /></button></Counter></Controls>
         <Primary type="button" disabled={!stock || busy || needsSelection} onClick={() => purchase(true)}>{checkout.isPending ? "Preparando compra…" : "Comprar agora"}</Primary>
         <Secondary type="button" disabled={!stock || busy || needsSelection} onClick={() => purchase(false)}><FiShoppingCart />{cart.isPending ? "Adicionando…" : "Adicionar ao carrinho"}</Secondary>
-        <Feedback role="status">{cart.isSuccess ? "Produto adicionado ao carrinho." : ""}</Feedback>
         {(cart.isError || checkout.isError) && <Error role="alert">{cartError(cart.error ?? checkout.error)}</Error>}
         <Store><StoreIcon><FiShoppingBag /></StoreIcon><div><Muted>Vendido por</Muted><strong>{product.store || "Loja local"}</strong></div></Store>
     </Panel>;
@@ -71,7 +76,6 @@ const Controls = styled.div`display:flex;align-items:center;justify-content:spac
 const Counter = styled.div`display:flex;align-items:center;border:1px solid #dce6eb;border-radius:6px;overflow:hidden;output{min-width:36px;text-align:center;font-weight:600;}button{border:0;background:white;width:36px;height:38px;display:grid;place-items:center;cursor:pointer;color:#257c9e;}button:disabled{color:#c3cbd0;cursor:default;}`;
 const Primary = styled.button`width:100%;min-height:48px;border:1px solid #36c5fa;border-radius:6px;background:#36c5fa;color:#103b4e;font-weight:650;font-size:15px;cursor:pointer;&:hover:not(:disabled){background:#20b9ef;} &:disabled{opacity:.5;cursor:default;}&:focus-visible{outline:3px solid #167594;outline-offset:3px;}`;
 const Secondary = styled(Primary)`display:flex;gap:9px;align-items:center;justify-content:center;margin-top:10px;background:white;color:#167da3;&:hover:not(:disabled){background:#edfaff;}`;
-const Feedback = styled.p`font-size:12px;color:#258164;margin:8px 0;:empty{display:none;}`;
 const Error = styled.p`font-size:13px;color:#aa3948;`;
 const Store = styled.div`display:flex;gap:12px;align-items:center;border-top:1px solid #eef1f4;padding-top:22px;margin-top:24px;strong{font-size:14px;color:#334f60;}`;
 const StoreIcon = styled.div`display:grid;place-items:center;width:42px;height:42px;border-radius:6px;background:#eff8fb;color:#3287a6;font-size:22px;`;

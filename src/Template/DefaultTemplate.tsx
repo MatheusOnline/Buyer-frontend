@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { Header } from "../Components/Layout/Header/Header";
 import { Footer } from "@components/Features/Fooster/Footer";
+import { CartFeedbackToast } from "../features/cart/components/CartFeedbackToast";
 
 export function DefaultTemplate({children}: {children: React.ReactNode}) {
-    return <Layout><Header /><Content id="main-content">{children}</Content><Footer /></Layout>;
+    return <Layout><Header /><Content id="main-content">{children}</Content><Footer /><CartFeedbackToast /></Layout>;
 }
 const Layout = styled.div`
     min-height: 100vh; display: flex; flex-direction: column; background: #f7f9fb;

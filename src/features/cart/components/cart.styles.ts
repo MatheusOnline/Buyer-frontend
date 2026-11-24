@@ -7,6 +7,7 @@ export const Layout = styled.div`display:grid;grid-template-columns:minmax(0,1fr
 export const List = styled.div`display:flex;flex-direction:column;gap:14px;min-width:0;`;
 export const Toolbar = styled.div`display:flex;align-items:center;justify-content:space-between;padding:16px 18px;background:white;border:1px solid #e5ecf0;border-radius:6px;color:#627c8b;font-size:12px;label{display:flex;align-items:center;gap:9px;cursor:pointer;}input{accent-color:#008ecc;}`;
 export const Item = styled.article`display:grid;grid-template-columns:20px 100px minmax(0,1fr);gap:16px;background:white;border:1px solid #e5ecf0;border-radius:8px;padding:20px;align-items:start;>input{margin-top:8px;accent-color:#008ecc;}@media(max-width:600px){grid-template-columns:18px 70px minmax(0,1fr);padding:14px;gap:10px;}`;
+export const DeliveryEstimate = styled.span`grid-column:1/-1;display:inline-flex;align-items:center;justify-self:start;min-height:25px;padding:5px 9px;border:1px solid #f1d88b;border-radius:5px;background:#fff8df;color:#91630b;font-size:10px;font-weight:750;letter-spacing:.45px;line-height:1.35;`;
 export const Picture = styled(Link)`display:grid;place-items:center;height:100px;background:white;color:#9cabb3;img{height:100%;width:100%;object-fit:contain;}@media(max-width:600px){height:80px;}`;
 export const Info = styled.div`min-width:0;h2{font-size:14px;font-weight:600;line-height:1.5;margin:3px 0 6px;a{text-decoration:none;color:#345466;}}p{font-size:11px;color:#8497a2;line-height:1.6;margin:4px 0;}strong{font-size:16px;color:#284c60;}del{font-size:11px;color:#9daab3;margin-right:8px;}`;
 export const PriceRow = styled.div`display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:12px 0;`;
@@ -20,4 +21,3 @@ export const State = styled.section`display:flex;flex-direction:column;align-ite
 export const Error = styled.p`color:#ad4456!important;background:#fff5f6;border:1px solid #f1d6dc;border-radius:4px;padding:9px;font-size:12px;line-height:1.6;`;
 export const Badge = styled.span`font-size:10px;color:#188665;background:#effaf5;border-radius:4px;padding:4px 6px;`;
 
-export const StoreClosed = styled.p`&&{margin:6px 0 0;color:#9a5a16;font-size:12px;font-weight:600;line-height:1.45;}`;
