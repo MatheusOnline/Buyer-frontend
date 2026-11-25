@@ -12,6 +12,7 @@ import { useCreateCheckoutDirect } from "../../../../service/checkoutService.ts"
 const money = (value: number) => value.toLocaleString("pt-BR", {style:"currency",currency:"BRL"});
 export const ProductInfo = ({product, isLoading, selectedSku, onSelectSku}: {product: ProductInformationProps; isLoading:boolean; selectedSku?:ProductVariation; onSelectSku:(id:string)=>void}) => {
     const [quantity, setQuantity] = useState(1);
+    const [selectedValues, setSelectedValues] = useState<string[]>([]);
     const user = useAuth(state => state.user);
     const navigate = useNavigate();
     const location = useLocation();
@@ -19,8 +20,26 @@ export const ProductInfo = ({product, isLoading, selectedSku, onSelectSku}: {pro
     const checkout = useCreateCheckoutDirect();
     if (isLoading) return <Panel aria-busy="true"><Loading /><Loading /><Loading /></Panel>;
     const variations = product.skus ?? [];
-    const hasChoices = variations.length > 1;
-    const activeSku = selectedSku ?? (!hasChoices ? variations[0] : undefined);
+    const skuValues = (sku: ProductVariation) => (sku.variation_value ?? "").split(" / ").map(value => value.trim());
+    const hasAxisNames = product.variation_type?.startsWith("@2:");
+    // Older listings can contain repeated parent / child labels without axis metadata.
+    const paths = variations.map(skuValues);
+    const parentsWithChildren = paths.filter(parts => parts.length === 2).map(([parent]) => parent);
+    const legacyGroups = parentsWithChildren.length > new Set(parentsWithChildren).size
+        && paths.every(parts => parts.length <= 2 && parts.every(Boolean)
+            && (parts.length === 2 || !parentsWithChildren.includes(parts[0])));
+    const nested = hasAxisNames || legacyGroups;
+    const variationAxes = hasAxisNames
+        ? product.variation_type!.slice(3).split(" / ")
+        : ["Variação", "Subvariação"];
+    const matchSelection = (selection: string[]) => variations.find(sku => {
+        const values = skuValues(sku);
+        return values.length === selection.length && values.every((value, i) => value === selection[i]);
+    });
+    const hasChoices = variations.length > 1 || Boolean(nested && variations.length);
+    const activeSku = nested
+        ? matchSelection(selectedValues)
+        : selectedSku ?? (!hasChoices ? variations[0] : undefined);
     const needsSelection = hasChoices && !activeSku;
     const stock = Math.max(0, activeSku?.stock ?? product.available_stock ?? product.stock ?? 0);
     const original = Number(activeSku?.price ?? product.original_price);
@@ -29,6 +48,17 @@ export const ProductInfo = ({product, isLoading, selectedSku, onSelectSku}: {pro
     const price = onSale ? offer : original;
     const promotion = activeSku ? activeSku.promotion : product.promotion;
     const busy = checkout.isPending;
+    function chooseAxis(index:number, value:string) {
+        const next=[...selectedValues.slice(0,index),value];
+        setSelectedValues(next);
+        setQuantity(1);
+        cart.reset();
+        checkout.reset();
+        const match = matchSelection(next);
+        const group = variations.filter(sku => skuValues(sku)[0] === next[0]);
+        const preview = match ?? group.find(sku => sku.image_url) ?? group[0];
+        if (preview) onSelectSku(preview.id);
+    }
     function purchase(direct:boolean) {
         if (needsSelection || !stock) return;
         if (!user) {navigate("/auth/login",{state:{from:location.pathname + location.search}});return;}
@@ -48,7 +78,26 @@ export const ProductInfo = ({product, isLoading, selectedSku, onSelectSku}: {pro
         <Code>Cód. {product.code}</Code>
         <Title>{product.title}</Title>
         {product.brand && <Muted>Marca: {product.brand}</Muted>}
-        {hasChoices && <Variations><legend>Escolha uma opção{activeSku ? `: ${activeSku.variation_value || activeSku.sku}` : ""}</legend><Options>{variations.map(sku => <Option type="button" key={sku.id} $selected={sku.id === activeSku?.id} aria-pressed={sku.id === activeSku?.id} disabled={sku.stock <= 0 || busy} onClick={() => {onSelectSku(sku.id);setQuantity(1);cart.reset();checkout.reset();}}>{sku.image_url && <img src={sku.image_url} alt="" />}<span>{sku.variation_value || sku.sku}{sku.stock <= 0 && <small>Esgotado</small>}</span></Option>)}</Options>{needsSelection && <Muted>Selecione a variação desejada para ver o preço e a disponibilidade.</Muted>}</Variations>}
+        {hasChoices && (nested ? <VariationGroups>{variationAxes.map((axis,index)=>{
+            if (index > 0 && !selectedValues[index - 1]) return null;
+            const relevantSkus = index > 0
+                ? variations.filter(sku => skuValues(sku)[index - 1] === selectedValues[index - 1])
+                : variations;
+            const options=[...new Set(relevantSkus.map(sku=>skuValues(sku)[index]).filter((value):value is string=>Boolean(value)))];
+            if (!options.length) return null;
+            return <Variations key={`${axis}-${index}`}><legend>{axis}{selectedValues[index]?`: ${selectedValues[index]}`:""}</legend><Options>{options.map(value=>{
+                const matching = relevantSkus.filter(sku => skuValues(sku)[index] === value);
+                const available = matching.some(sku => sku.stock > 0);
+                const image = index === 0 && matching.find(sku => sku.image_url)?.image_url;
+                const chosen = selectedValues[index] === value;
+                return <Option type="button" key={value} $selected={chosen} aria-pressed={chosen}
+                    disabled={!available || busy} onClick={() => chooseAxis(index, value)}>
+                    {image && <img src={image} alt="" />}
+                    <span>{value}{!available && <small>Esgotado</small>}</span>
+                </Option>;
+            })}</Options></Variations>;
+        })}</VariationGroups> : <Variations><legend>Escolha uma opção{activeSku ? `: ${activeSku.variation_value || activeSku.sku}` : ""}</legend><Options>{variations.map(sku => <Option type="button" key={sku.id} $selected={sku.id === activeSku?.id} aria-pressed={sku.id === activeSku?.id} disabled={sku.stock <= 0 || busy} onClick={() => {onSelectSku(sku.id);setQuantity(1);cart.reset();checkout.reset();}}>{sku.image_url && <img src={sku.image_url} alt="" />}<span>{sku.variation_value || sku.sku}{sku.stock <= 0 && <small>Esgotado</small>}</span></Option>)}</Options></Variations>)}
+        {needsSelection && <Muted>Selecione as opções para ver o preço e a disponibilidade.</Muted>}
         <Stock $available={stock > 0}><FiCheck />{stock > 0 ? "Disponível em estoque" : "Produto indisponível"}</Stock>
         <PriceBlock>{onSale && <Offer title={promotion?.name}>{promotion?.name ?? "Oferta especial"} · {Math.round((1 - price / original) * 100)}% OFF</Offer>}
             {!activeSku && product.from_price && <Muted>A partir de</Muted>}
@@ -82,5 +131,6 @@ const StoreIcon = styled.div`display:grid;place-items:center;width:42px;height:4
 const Loading = styled.div`height:90px;background:#f1f5f7;border-radius:6px;margin-bottom:20px;`;
 
 const Variations = styled.fieldset`border:0;padding:0;margin:20px 0 0;min-width:0;legend{font-size:13px;font-weight:600;color:#405e6f;margin-bottom:12px;}p{margin-top:10px;}`;
+const VariationGroups = styled.div`display:grid;gap:10px;`;
 const Options = styled.div`display:flex;flex-wrap:wrap;gap:8px;`;
 const Option = styled.button<{$selected:boolean}>`display:flex;gap:8px;align-items:center;max-width:100%;padding:8px 12px;border:2px solid ${({$selected})=>$selected?'var(--action-primary)':'#e2eaf0'};border-radius:6px;background:${({$selected})=>$selected?'#effaff':'white'};color:#395665;font-size:13px;cursor:pointer;img{width:32px;height:32px;object-fit:contain;}span{overflow-wrap:anywhere;text-align:left;}small{display:block;color:#8e9ca6;margin-top:4px;}&:disabled{opacity:.45;cursor:default;}&:focus-visible{outline:3px solid #167594;outline-offset:2px;}`;
